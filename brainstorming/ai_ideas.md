@@ -16,34 +16,32 @@ Patient Symptoms -> LLM extracts keywords -> Calls PubMed API -> Fetches Abstrac
 ------------------------------
 While this approach solves the "training data" problem, applying it to urgent care triage requires dealing with severe operational hurdles:
 
-* 
 * Latency Kills: Real-time urgent care triage requires responses within seconds. The PubMed API involves multi-step HTTP handshakes (ESearch then EFetch). Parsing massive XML files, embedding them on the fly, and prompting an LLM can easily take 15 to 30 seconds—far too slow for a critical emergency scenario. [8] 
 * API Rate Limiting: The National Center for Biotechnology Information (NCBI) strictly rate-limits public requests to 3 requests per second (or 10 per second if you register for an official API key). A busy hospital system or a sudden influx of users will quickly exhaust this limit and trigger 429 Too Many Requests errors. [9] 
 * Abstracts vs. Clinical Guidelines: PubMed contains clinical trials and academic hypotheses. Academic papers often don't translate to immediate action. An urgent care triage tool needs direct clinical protocol guidelines (e.g., “If symptom X is present, immediately route to the cath lab”). Relying on general literature abstracts can cause the LLM to hallucinate or miss standard emergency workflows. [10] 
-* 
+
 
 ------------------------------
 To build this safely without relying entirely on a slow, brittle live API, you should implement a hybrid retrieval system:
 
-* 
 * Tier 1: Static Local Database (The Core): Download and pre-index authoritative, static public triage guidelines, such as open-source emergency nursing manuals or the Emergency Severity Index (ESI) handbook. This guarantees sub-second retrieval times for standard conditions.
 * Tier 2: The Live API (The Edge Cases): Only fire the live PubMed/PMC API loop if the patient presents with highly anomalous symptoms, rare diseases, or complex drug interactions that your core database fails to confidently resolve.
 * Deterministic Guardrails: Never let the LLM make the final triage decision alone. Use standard Python logic alongside the RAG output. For instance, if specific red-flag keywords (like "chest pain", "stroke symptoms", or "unresponsive") are detected, bypass the RAG pipeline entirely and immediately prompt the user to call emergency services.
-* 
+
 
 ------------------------------
 Would you like to write a prototype script using Python's Biopython Entrez module to see how to fetch text programmatically? Alternatively, we can discuss guardrail frameworks like NeMo Guardrails to keep medical AI answers strictly confined to safety zones.
 
-[1] [https://www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/home/develop/api/)
-[2] [https://murphi.ai](https://murphi.ai/rag-in-healthcare/)
-[3] [https://github.com](https://github.com/grll/pubmedclient)
-[4] [https://vardhmanandroid2015.medium.com](https://vardhmanandroid2015.medium.com/rag-powered-ai-app-how-to-integrate-rest-api-for-real-time-data-for-knowledge-base-line-by-line-b6721259b38a)
-[5] [https://medium.com](https://medium.com/data-science/analyze-scientific-publications-with-e-utilities-and-python-56f76de22959)
-[6] [https://stackoverflow.com](https://stackoverflow.com/questions/17409107/obtaining-data-from-pubmed-using-python)
-[7] [https://github.com](https://github.com/metapub/metapub)
-[8] [https://library.cumc.columbia.edu](https://library.cumc.columbia.edu/kb/getting-started-pubmed-api)
-[9] [https://www.youtube.com](https://www.youtube.com/watch?v=BCG-M5k-gvE)
-[10] [https://www.meilisearch.com](https://www.meilisearch.com/blog/rag-for-medical-data)
+* [1] [https://www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/home/develop/api/)
+* [2] [https://murphi.ai](https://murphi.ai/rag-in-healthcare/)
+* [3] [https://github.com](https://github.com/grll/pubmedclient)
+* [4] [https://vardhmanandroid2015.medium.com](https://vardhmanandroid2015.medium.com/rag-powered-ai-app-how-to-integrate-rest-api-for-real-time-data-for-knowledge-base-line-by-line-b6721259b38a)
+* [5] [https://medium.com](https://medium.com/data-science/analyze-scientific-publications-with-e-utilities-and-python-56f76de22959)
+* [6] [https://stackoverflow.com](https://stackoverflow.com/questions/17409107/obtaining-data-from-pubmed-using-python)
+* [7] [https://github.com](https://github.com/metapub/metapub)
+* [8] [https://library.cumc.columbia.edu](https://library.cumc.columbia.edu/kb/getting-started-pubmed-api)
+* [9] [https://www.youtube.com](https://www.youtube.com/watch?v=BCG-M5k-gvE)
+* [10] [https://www.meilisearch.com](https://www.meilisearch.com/blog/rag-for-medical-data)
 
 
 
@@ -55,23 +53,33 @@ Building a Just-In-Time (JIT) Medical RAG is an impressive academic project. Her
 To make this work seamlessly for a class project, you should use the NCBI PubMed API via a helper library like biopython.
 Because medical text is highly specialized, you should use a small, medically dense embedding model from Hugging Face (like NeuML/pubmedbert-base-embeddings) [2] rather than generic ones.
 
-[User Input: Symptoms] 
+* [User Input: Symptoms] 
           │
           ▼
-[LLM Task 1: Keyword Extractor] ──(Generates Search Terms)──> [PubMed API]
+* [LLM Task 1: Keyword Extractor] ──(Generates Search Terms)──> [PubMed API]
                                                                     │
                                                                     ▼
-[User Prompt + Context] <──(In-Memory FAISS Vector Index) <── [Fetched Abstracts]
+* [User Prompt + Context] <──(In-Memory FAISS Vector Index) <── [Fetched Abstracts]
           │
           ▼
-[LLM Task 2: Triage Generator] ──> [Final Triage Level & Reason]
+* [LLM Task 2: Triage Generator] ──> [Final Triage Level & Reason]
 
 ------------------------------
 ## Step-by-Step Prototype Code
 Here is a clean, script-ready blueprint using LangChain and Biopython to execute this dynamic workflow.
 
+```python
+
 # !pip install langchain langchain-openai biopython faiss-cpu sentence-transformers
-import osfrom Bio import Entrezfrom langchain_openai import ChatOpenAIfrom langchain_community.embeddings import HuggingFaceEmbeddingsfrom langchain_community.vectorstores import FAISSfrom langchain_core.prompts import ChatPromptTemplatefrom langchain_core.output_parsers import StrOutputParser
+
+import osfrom Bio
+import Entrez
+from langchain_openai import ChatOpenAI
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
 # 1. Setup API Credentials (Replace with your actual keys)
 os.environ["OPENAI_API_KEY"] = "your-openai-api-key"
 Entrez.email = "your.email@university.edu"  # Required by NCBI
@@ -134,6 +142,7 @@ keyword_prompt = ChatPromptTemplate.from_template(
     return final_output
 # --- TEST THE SYSTEM ---symptoms_input = "60 year old female experiencing sudden weakness on the left side of her face and slurred speech."result = run_triage_pipeline(symptoms_input)
 print("\n📋 TRIAGE REPORT:\n", result)
+```
 
 ------------------------------
 ## What Makes This a Great Academic Submission?
