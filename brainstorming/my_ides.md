@@ -1,7 +1,17 @@
 - evaluation: ground truth could be medical exams, and then we see which answer produces
 my assistant and then somehow we evaluate how similar it is to the correct answer
 
-- taking keywords from the input prompt -- using a ml/nlp technique instead of  
+- taking keywords from the input prompt -- using a ml/nlp technique instead of LLM
+
+- data: manuals, scoring stuff, The WHO Clinical Registry 
+
+- ground truth:
+
+ * https://quizlet.com/test-questions/emergency-severity-index-practice-test-af46b8f8-0f03-40e5-8801-8d46a51b4395
+ * https://nurseslabs.com/emergency-nursing-triage-nclex-practice-quiz/
+ * https://quizlet.com/test-questions/emergency-triage-practice-test-45f040fe-7935-44b8-ab42-7f0244ebc7fb
+ * https://practicetestgeeks.com/urgent-care-urgent-care-triage-and-assessment-practice-test
+ * https://practicetestgeeks.com/urgent-care-urgent-care-triage-and-assessment-practice-test
 
 
 - i'll use uv for dependeny management
