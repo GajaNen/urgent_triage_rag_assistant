@@ -71,7 +71,15 @@ Here is a clean, script-ready blueprint using LangChain and Biopython to execute
 ```python
 
 # !pip install langchain langchain-openai biopython faiss-cpu sentence-transformers
-import osfrom Bio import Entrezfrom langchain_openai import ChatOpenAIfrom langchain_community.embeddings import HuggingFaceEmbeddingsfrom langchain_community.vectorstores import FAISSfrom langchain_core.prompts import ChatPromptTemplatefrom langchain_core.output_parsers import StrOutputParser
+
+import osfrom Bio
+import Entrez
+from langchain_openai import ChatOpenAI
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
 # 1. Setup API Credentials (Replace with your actual keys)
 os.environ["OPENAI_API_KEY"] = "your-openai-api-key"
 Entrez.email = "your.email@university.edu"  # Required by NCBI
