@@ -70,6 +70,8 @@ Because medical text is highly specialized, you should use a small, medically de
 ## Step-by-Step Prototype Code
 Here is a clean, script-ready blueprint using LangChain and Biopython to execute this dynamic workflow.
 
+```python
+
 # !pip install langchain langchain-openai biopython faiss-cpu sentence-transformers
 import osfrom Bio import Entrezfrom langchain_openai import ChatOpenAIfrom langchain_community.embeddings import HuggingFaceEmbeddingsfrom langchain_community.vectorstores import FAISSfrom langchain_core.prompts import ChatPromptTemplatefrom langchain_core.output_parsers import StrOutputParser
 # 1. Setup API Credentials (Replace with your actual keys)
@@ -134,6 +136,7 @@ keyword_prompt = ChatPromptTemplate.from_template(
     return final_output
 # --- TEST THE SYSTEM ---symptoms_input = "60 year old female experiencing sudden weakness on the left side of her face and slurred speech."result = run_triage_pipeline(symptoms_input)
 print("\n📋 TRIAGE REPORT:\n", result)
+```
 
 ------------------------------
 ## What Makes This a Great Academic Submission?
