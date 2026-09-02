@@ -32,16 +32,16 @@ To build this safely without relying entirely on a slow, brittle live API, you s
 ------------------------------
 Would you like to write a prototype script using Python's Biopython Entrez module to see how to fetch text programmatically? Alternatively, we can discuss guardrail frameworks like NeMo Guardrails to keep medical AI answers strictly confined to safety zones.
 
-*[1] [https://www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/home/develop/api/)
-*[2] [https://murphi.ai](https://murphi.ai/rag-in-healthcare/)
-*[3] [https://github.com](https://github.com/grll/pubmedclient)
-*[4] [https://vardhmanandroid2015.medium.com](https://vardhmanandroid2015.medium.com/rag-powered-ai-app-how-to-integrate-rest-api-for-real-time-data-for-knowledge-base-line-by-line-b6721259b38a)
-*[5] [https://medium.com](https://medium.com/data-science/analyze-scientific-publications-with-e-utilities-and-python-56f76de22959)
-*[6] [https://stackoverflow.com](https://stackoverflow.com/questions/17409107/obtaining-data-from-pubmed-using-python)
-*[7] [https://github.com](https://github.com/metapub/metapub)
-*[8] [https://library.cumc.columbia.edu](https://library.cumc.columbia.edu/kb/getting-started-pubmed-api)
-*[9] [https://www.youtube.com](https://www.youtube.com/watch?v=BCG-M5k-gvE)
-*[10] [https://www.meilisearch.com](https://www.meilisearch.com/blog/rag-for-medical-data)
+* [1] [https://www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/home/develop/api/)
+* [2] [https://murphi.ai](https://murphi.ai/rag-in-healthcare/)
+* [3] [https://github.com](https://github.com/grll/pubmedclient)
+* [4] [https://vardhmanandroid2015.medium.com](https://vardhmanandroid2015.medium.com/rag-powered-ai-app-how-to-integrate-rest-api-for-real-time-data-for-knowledge-base-line-by-line-b6721259b38a)
+* [5] [https://medium.com](https://medium.com/data-science/analyze-scientific-publications-with-e-utilities-and-python-56f76de22959)
+* [6] [https://stackoverflow.com](https://stackoverflow.com/questions/17409107/obtaining-data-from-pubmed-using-python)
+* [7] [https://github.com](https://github.com/metapub/metapub)
+* [8] [https://library.cumc.columbia.edu](https://library.cumc.columbia.edu/kb/getting-started-pubmed-api)
+* [9] [https://www.youtube.com](https://www.youtube.com/watch?v=BCG-M5k-gvE)
+* [10] [https://www.meilisearch.com](https://www.meilisearch.com/blog/rag-for-medical-data)
 
 
 
@@ -53,16 +53,16 @@ Building a Just-In-Time (JIT) Medical RAG is an impressive academic project. Her
 To make this work seamlessly for a class project, you should use the NCBI PubMed API via a helper library like biopython.
 Because medical text is highly specialized, you should use a small, medically dense embedding model from Hugging Face (like NeuML/pubmedbert-base-embeddings) [2] rather than generic ones.
 
-[User Input: Symptoms] 
+* [User Input: Symptoms] 
           │
           ▼
-[LLM Task 1: Keyword Extractor] ──(Generates Search Terms)──> [PubMed API]
+* [LLM Task 1: Keyword Extractor] ──(Generates Search Terms)──> [PubMed API]
                                                                     │
                                                                     ▼
-[User Prompt + Context] <──(In-Memory FAISS Vector Index) <── [Fetched Abstracts]
+* [User Prompt + Context] <──(In-Memory FAISS Vector Index) <── [Fetched Abstracts]
           │
           ▼
-[LLM Task 2: Triage Generator] ──> [Final Triage Level & Reason]
+* [LLM Task 2: Triage Generator] ──> [Final Triage Level & Reason]
 
 ------------------------------
 ## Step-by-Step Prototype Code
