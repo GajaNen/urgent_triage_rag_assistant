@@ -5,8 +5,8 @@ A RAG-based urgent care triage assistant for the LLM Zoomcamp course. Evaluates 
 ## Overview
 
 ### Architecture
-- **Knowledge Base**: Medical triage manuals (PDFs) → extracted & chunked
-- **Retrieval**: Hybrid approach comparing text search, vector search (general + medical embeddings)
+- **Knowledge Base**: Medical triage manuals (PDFs) and handbooks → extracted & chunked
+- **Retrieval**: Hybrid approach comparing text search, vector search (general + medical embeddings) and hybrid search
 - **LLM**: GPT-4o-mini for keyword extraction and triage reasoning
 - **Interface**: FastAPI (backend) + Streamlit (monitoring dashboard)
 - **Orchestration**: dlt/Airflow for data ingestion pipeline
