@@ -81,3 +81,4 @@ Results saved to `data/retrieval_results.json` and summarized in `retrieval_anal
 - [ ] Automated ingestion pipeline (dlt/Airflow)
 - [ ] Containerization (Docker)
 - [ ] Cloud deployment
+- [ ] Set up persistent storage (of data, of results, etc.)
