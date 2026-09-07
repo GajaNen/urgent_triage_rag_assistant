@@ -2,8 +2,10 @@
 
 ## Running the app
 
-From the repo root, with a `.env` file containing at least `OPENAI_API_KEY` (and
-`NCBI_EMAIL`/`NCBI_API_KEY` if you use those):
+From the repo root, copy `.env.example` to `.env` and fill in `OPENAI_API_KEY`
+(required — used for triage reasoning and evaluation). `NCBI_API_KEY` is
+optional, only used for the live PubMed lookup in retrieval, and works
+without it too.
 
 ```bash
 docker compose up --build

@@ -38,12 +38,16 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
 ## Environment Setup
 
-Create a `.env` file in the project root:
+Copy the template and fill in your key:
 
-```env
-OPENAI_API_KEY=your-openai-api-key
-NCBI_EMAIL=your.email@example.com
+```bash
+cp .env.example .env
 ```
+
+`OPENAI_API_KEY` is required (used by `rag.py`/`evaluate_llm.py`).
+`NCBI_API_KEY` is optional (only used for the live PubMed lookup in
+`retrieval.py`; it works without it too, just with lower rate limits). See
+`.env.example` for the full list of supported variables.
 
 ## Data Preparation
 

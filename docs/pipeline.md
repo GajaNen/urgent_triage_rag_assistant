@@ -36,15 +36,19 @@ flowchart TD
     G --> H[Write new fingerprint\nto last_ingested.txt]
 ```
 
-Ingestion workflow was automated using ```dlt```.
+Ingestion is automated with [dlt](https://dlthub.com/), a Python library for
+building data pipelines. It watches the `knowledge_base/` folder and only
+re-runs data preparation when a PDF is added, removed, or changed, so the
+(slow) chunking/embedding step isn't repeated on every container start.
 
-Watches the `knowledge_base/` folder and only re-runs data preparation when a
-PDF is added, removed, or changed, so the (slow) chunking/embedding step
-isn't repeated on every container start.
+**Tools used:**
+- **dlt** — orchestrates the pipeline: declares the `kb_files` resource, runs it, and persists state between runs.
+- **DuckDB** — an embedded (file-based, no server) SQL database; used here purely as dlt's storage backend for the file-tracking table.
+- **hashlib (stdlib)** — hashes the filename+modified-time of every PDF into one fingerprint, so a single comparison tells us if anything changed.
 
-**Tools used:** [dlt](https://dlthub.com/) for the pipeline/state, DuckDB as
-dlt's local destination for the file-tracking table, plain `hashlib` for
-change detection.
+**Not used:** Airflow — this is one linear job with no branching, retries-per-task,
+or cross-DAG dependencies, so a full scheduler + webserver + metadata DB would
+be unnecessary operational overhead for a single-container batch job.
 
 ---
 
@@ -71,11 +75,12 @@ chunks, and indexes those chunks two ways: a keyword index (SQLite FTS5) and
 two vector indices built with different embedding models, so retrieval
 quality can be compared later.
 
-**Tools used:** PyMuPDF for PDF text extraction/redaction, LangChain's
-`RecursiveCharacterTextSplitter` for chunking, HuggingFace `sentence-transformers`
-(general-purpose MiniLM and domain-specific PubMedBERT) for embeddings, FAISS
-for the vector stores, SQLite (with the FTS5 extension) for chunk storage and
-keyword search.
+**Tools used:**
+- **PyMuPDF (`pymupdf`)** — reads PDF files and extracts their text/page layout; also draws the black-box redactions.
+- **LangChain `RecursiveCharacterTextSplitter`** — splits long page text into overlapping ~500-character chunks along natural boundaries (paragraphs, sentences) so related content isn't cut mid-thought.
+- **HuggingFace `sentence-transformers`** — turns each text chunk into a numeric vector (embedding) that captures its meaning; we compare a general-purpose model (MiniLM) against a medical-domain one (PubMedBERT).
+- **FAISS** — a library for storing vectors and finding the nearest ones to a query vector quickly (vector similarity search).
+- **SQLite + FTS5** — a lightweight, file-based SQL database; its FTS5 extension adds BM25-ranked keyword search with no extra service to run.
 
 **Not used:** a managed vector DB (Qdrant/Pinecone/Weaviate) — the corpus is a
 handful of PDFs (low thousands of chunks), so a local FAISS index is enough
@@ -111,9 +116,11 @@ Given a query, runs every retrieval method in parallel (text, both vector
 indices, and RRF-combined hybrids) so the outputs can be compared directly.
 Optionally also queries PubMed live for supplementary evidence.
 
-**Tools used:** SQLite FTS5 (text), FAISS + HuggingFace embeddings (vector),
-in-house reciprocal rank fusion for hybrid search, NCBI E-utilities API
-(`urllib`) for optional live PubMed lookups.
+**Tools used:**
+- **SQLite FTS5** — keyword/BM25 search over the chunk text (see Data Preparation).
+- **FAISS + HuggingFace embeddings** — vector similarity search over the two embedding indices.
+- **Reciprocal Rank Fusion (RRF, in-house)** — a simple formula (`1 / (rank + k)`) for merging ranked lists from different search methods into one combined ranking, without needing the raw scores to be on the same scale.
+- **NCBI E-utilities API (`urllib`, stdlib)** — NCBI's free HTTP API for searching and fetching PubMed article abstracts, used for optional live supplementary evidence.
 
 **Not used:** a re-ranker model (e.g. cross-encoder) — RRF over multiple
 retrievers already gave a reasonable ranking signal for this corpus size, and
@@ -149,9 +156,10 @@ scores each method with hit rate and MRR, and separately checks how much the
 methods agree with each other (Jaccard overlap) and which source documents
 they favor.
 
-**Tools used:** plain Python for the metrics (hit rate, MRR, Jaccard overlap),
-SQLite for storing the raw retrieval batch, JSON for the ground truth and the
-final report.
+**Tools used:**
+- **Plain Python** — computes the metrics: hit rate (% of queries where the correct chunk appears in the results), MRR (mean reciprocal rank — rewards finding the correct chunk higher up the list), and Jaccard overlap (similarity between two methods' result sets).
+- **SQLite** — stores the raw retrieval batch (every method's results for every query) so it can be re-analyzed without re-running retrieval.
+- **JSON** — format for the ground-truth file (`test_queries.json`) and the final report (`retrieval_analysis.json`).
 
 **Not used:** RAGAS or a similar off-the-shelf RAG-evaluation framework — the
 ground truth here is chunk-id based (does the method retrieve the *known
@@ -181,8 +189,10 @@ ESI level (1-5) plus rationale, refusing to answer outside the triage domain.
 Every call (tokens, cost, inputs/outputs) is logged for later evaluation and
 monitoring.
 
-**Tools used:** OpenAI Chat Completions API with Pydantic structured output
-(`ESIAssessment`) for a guaranteed-shape response, SQLite for call logging.
+**Tools used:**
+- **OpenAI API** — the LLM call itself (default model: `gpt-4o-mini`).
+- **Pydantic** (`ESIAssessment` model) — forces the LLM's response into a guaranteed shape (`esi_level` 1-5 or null, plus `rationale`), instead of parsing free-form text.
+- **SQLite** — logs every call (query, model, tokens, cost, latency, predicted answer) for monitoring and later evaluation.
 
 **Not used:** a full orchestration framework (LangChain chains/LangGraph) for
 the RAG step itself — the flow is a single retrieve-then-generate call, so a
@@ -209,9 +219,10 @@ combination of LLM model and retrieval approach, then compares them on
 accuracy (does the predicted ESI level match) and answer rate (did the model
 actually assign a level instead of declining).
 
-**Tools used:** OpenAI models (`gpt-4o-mini`, `gpt-4o` by default, configurable
-via `EVAL_MODELS`), SQLite for reading back logged calls, plain Python for
-scoring.
+**Tools used:**
+- **OpenAI models** — `gpt-4o-mini` and `gpt-4o` by default (configurable via `EVAL_MODELS`), compared head-to-head.
+- **SQLite** — reads back the logged calls made during this evaluation run.
+- **Plain Python** — computes accuracy (predicted ESI level == ground-truth level) and answer rate (% of queries where a level was assigned at all) per model/approach combination.
 
 **Not used:** an LLM-as-judge for free-text answer quality — ESI level is a
 discrete 1-5 label, so exact-match accuracy against ground truth is a more
@@ -265,18 +276,6 @@ TODO.
 ## 10. Dashboard
 
 TODO.
-
-
-```mermaid
-flowchart TD
-    A[Start: ingest_pipeline.py] --> B[dlt resource: kb_files\nscan knowledge_base/*.pdf]
-    B --> C[dlt pipeline run\ndestination: duckdb state.duckdb]
-    C --> D[Compute fingerprint\nsha256 of filename+mtime per PDF]
-    D --> E{Fingerprint changed\nor force=True?}
-    E -- No --> F[Skip: log 'no changes']
-    E -- Yes --> G[DataPrep.run\nsee Data Preparation phase]
-    G --> H[Write new fingerprint\nto last_ingested.txt]
-```
 
 ---
 

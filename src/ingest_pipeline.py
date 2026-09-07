@@ -45,6 +45,7 @@ def _current_fingerprint() -> str:
 
 def run_ingestion(force: bool = False) -> bool:
     """Record the current knowledge-base fileset via dlt, then re-run DataPrep only if it changed."""
+    PIPELINE_DIR.mkdir(parents=True, exist_ok=True)
     pipeline = dlt.pipeline(
         pipeline_name="kb_ingestion",
         destination=dlt.destinations.duckdb(str(PIPELINE_DIR / "state.duckdb")),
