@@ -1,12 +1,11 @@
 # Pipeline
 
-This project turns a folder of medical triage PDFs into a RAG assistant that
+This project uses medical triage literature as knowledge base for a RAG assistant that
 assigns an Emergency Severity Index (ESI 1-5) level to a described patient
 presentation. It runs as six phases: ingest new source documents, prepare
-(chunk + embed) them, retrieve relevant passages for a query, evaluate
+(chunk + embed) them, retrieve relevant passages for a query using various methods, evaluate
 retrieval quality, generate a triage answer with an LLM (RAG), and evaluate
-that LLM output. Each phase below shows its flow, the tools used, and the
-notable alternatives we didn't use.
+that LLM output. Each phase below shows its flow and the tools used.
 
 ## Table of Contents
 
@@ -46,10 +45,6 @@ re-runs data preparation when a PDF is added, removed, or changed, so the
 - **DuckDB** — an embedded (file-based, no server) SQL database; used here purely as dlt's storage backend for the file-tracking table.
 - **hashlib (stdlib)** — hashes the filename+modified-time of every PDF into one fingerprint, so a single comparison tells us if anything changed.
 
-**Not used:** Airflow — this is one linear job with no branching, retries-per-task,
-or cross-DAG dependencies, so a full scheduler + webserver + metadata DB would
-be unnecessary operational overhead for a single-container batch job.
-
 ---
 
 ## 2. Data Preparation
@@ -71,7 +66,7 @@ flowchart TD
 ```
 
 Extracts text from the source PDFs, splits it into overlapping ~500-character
-chunks, and indexes those chunks two ways: a keyword index (SQLite FTS5) and
+chunks (overlap=100), and indexes those chunks two ways: a keyword index (SQLite FTS5) and
 two vector indices built with different embedding models, so retrieval
 quality can be compared later.
 
@@ -82,9 +77,7 @@ quality can be compared later.
 - **FAISS** — a library for storing vectors and finding the nearest ones to a query vector quickly (vector similarity search).
 - **SQLite + FTS5** — a lightweight, file-based SQL database; its FTS5 extension adds BM25-ranked keyword search with no extra service to run.
 
-**Not used:** a managed vector DB (Qdrant/Pinecone/Weaviate) — the corpus is a
-handful of PDFs (low thousands of chunks), so a local FAISS index is enough
-and avoids running/paying for an extra service. Also didn't use Elasticsearch
+A local FAISS index is avoids running/paying for an extra service. Also didn't use ```Elasticsearch```/```minisearch```
 for keyword search, since SQLite FTS5 gives BM25-style ranking with zero
 extra infrastructure at this scale.
 
