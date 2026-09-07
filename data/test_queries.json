@@ -89,7 +89,115 @@
         {
             "query": "A 45-year-old patient with left lower leg pain and swelling, started 2 days ago after a 12-hour car trip. Vital signs WNL.",
             "correct_answer": 3
-        }
-    ]
+        },
+		       {
+            "query": "EMS arrives with a 25 year old female with sudden onset of significant vaginal bleeding, with 9/10 abdominal pain. The patient is 7 mos pregnant. BP 92/palp, HR 130.",
+            "correct_answer": 1
+        },
+        {
+            "query": "Emergency Severity Index level in which one or more resources are needed.",
+            "correct_answer": 4
+        },
+        {
+            "query": "A 34 year old male presents to triage with right lower quadrant pain, 5/10, all day. Pain is associated with loss of appetite, nausea, and vomiting. Past medical history: none. The patient appears in moderate discomfort, skin warm and dry; guarding abdomen.",
+            "correct_answer": 3
+        },
+        {
+            "query": "A 22 year old female with 10/10 abdominal pain for two days. Denies nausea, vomiting, diarrhea, or urinary frequency. Her heart rate is 84 and she is eating ice cream.",
+            "correct_answer": 3
+        },
+        {
+            "query": "Emergency Severity Index level in which many resources are needed.",
+            "correct_answer": 3
+        },
+        {
+            "query": "A 40-year old male presents to triage with vague, midsternal chest discomfort, occurring intermittently for one month. This morning he reports a similar episode, which has now resolved. Currently complains of mild nausea, but feels pretty good. Medical History: Smoker. He is alert, with skin warm and dry and does not appear in any distress.",
+            "correct_answer": 2
+        },
+        {
+            "query": "A 60 year old male presents with complaint of dark stools for one month with vague abdominal pain. Past medical history: none. Pulse is tachycardia at rate of 140 and he has a blood pressure of 80 palpable. His skin is pale and diaphoretic.",
+            "correct_answer": 1
+        },
+        {
+            "query": "A 60 year old male complains of sudden loss of vision in the left eye that morning. Patient denies pain or discomfort. Past medical history: CAD, HTN. The patient is slightly anxious but no distress.",
+            "correct_answer": 2
+        },
+        {
+            "query": "Emergency Severity Index level in which no resources are needed.",
+            "correct_answer": 5
+        },
+        {
+            "query": "A 68 year old male brought in by his wife for sudden onset of left arm weakness, slurred speech, and difficulty walking. Symptoms began 2 hours prior to arrival. Past medical history: Atrial fibrillation. Meds: Lanoxin. The patient is awake, oriented, mildly short of breath. Speech is slurred, right-sided facial droop is present. Left upper-extremity weakness noted with 2/5 muscle strength.",
+            "correct_answer": 2
+        },
+        {
+            "query": "A 70 year old female with her right arm in a cast is brought to triage by her daughter. The daughter states that her mother fell yesterday and fractured her arm. The patient is complaining of pain. Daughter states \"they put this cast on yesterday, but I think it's too tight.\" Daughter reports her mother has been very restless at home and thinks her mother is in pain. Patient has a history of Alzheimer's disease. The patient is confused and mumbling (at baseline per her daughter); face flushed. She is unable to provide verbal description of her complaints. Her right upper extremity is in a short arm cast; digits appear tense, swollen and ecchymotic. Nail beds are pale; capillary refill delayed. Patient is not wearing a sling.",
+            "correct_answer": 2
+        },
+        {
+            "query": "A 40 year old male presents to triage with a gradual increase in shortness of breath over the past two days associated with chest pain. Past medical history: colon cancer. He is in moderate respiratory distress, skin warm and dry.",
+            "correct_answer": 2
+        },
+        {
+            "query": "A 22 year old female on college break presents to the triage desk complaining of sudden onset of feeling very sick, severe sore throat, and feeling \"feverish\". She is dyspneic and drooling at triage, and her skin is hot to touch.",
+            "correct_answer": 2
+        },
+        {
+            "query": "Emergency Severity Index level that is high risk situation, confused/disoriented, severe pain or distress.",
+            "correct_answer": 2
+        },
+        {
+            "query": "Emergency Severity Index level that requires immediate life-saving intervention.",
+            "correct_answer": 1
+        },
+        {
+            "query": "An 8 month old presents with fever, cough, and vomiting. The baby has vomited twice this morning; no diarrhea. Mom states the baby is usually healthy but has \"not been eating well lately\". Doesn't own a thermometer, but knows the baby is 'hot' and gave acetaminophen two hours prior to arrival. The baby is wrapped in a blanket, eyes are open, appears listless, skin hot and moist, sunken fontanel. Respirations are regular and not labored.",
+            "correct_answer": 2
+        },
+        {
+            "query": "Which triage level under the Emergency Severity Index (ESI) describes a patient who is not in immediate danger but requires two or more resources for evaluation?",
+            "correct_answer": 3
+        },
+		{
+		  "query": "A patient arrives at the emergency department with a Glasgow Coma Scale score of 3 and is unresponsive with a gunshot wound to the head. What is the appropriate Emergency Severity Index (ESI) level?",
+		  "correct_answer": 1
+		},
+		{
+		  "query": "A patient presents with shortness of breath, respiratory rate of 32, and oxygen saturation of 86%. She is on birth control pills and smokes. How should this patient be triaged according to ESI?",
+		  "correct_answer": 2
+		},
+		{
+		  "query": "A healthy child has a laceration on his lip that extends through the vermilion border and requires precise alignment during repair. The child is uncooperative. Which ESI level applies?",
+		  "correct_answer": 3
+		},
+		{
+		  "query": "A patient with an open fracture of the right lower leg has pedal pulse and warm toes, with normal vital signs. What is the appropriate ESI level?",
+		  "correct_answer": 3
+		},
+		{
+		  "query": "A patient with chest pressure, nausea, cool clammy skin, irregular pulse, and vital signs showing hypotension and bradycardia after shoveling snow is brought in. Appropriate ESI level?",
+		  "correct_answer": 1
+		},
+		{
+		  "query": "A female presents with dysuria and urinary frequency but no fever or abdominal pain, vitals stable. Which ESI level is appropriate?",
+		  "correct_answer": 4
+		},
+		{
+		  "query": "An infant under 28 days old presents with a fever higher than 38°C but otherwise appears well. What is the correct ESI level?",
+		  "correct_answer": 2
+		},
+		{
+		  "query": "A patient presents requesting a medication refill for blood pressure with no complaints and normal vitals. How is this patient triaged?",
+		  "correct_answer": 5
+		},
+		{
+		  "query": "A patient fell off a 4-foot jungle gym, was unconscious briefly but is now alert, crying with no visible deformities. What ESI level applies?",
+		  "correct_answer": 2
+		},
+		{
+		  "query": "A patient with asthma presents with wheezing, fever of 103°F, increased work of breathing, and oxygen saturation of 79%. Appropriate ESI level?",
+		  "correct_answer": 1
+		}
+	]
 }
 
