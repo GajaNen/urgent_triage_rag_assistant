@@ -15,12 +15,13 @@ under time pressure.
 This project is a RAG (Retrieval-Augmented Generation) assistant that takes
 a free-text patient presentation (symptoms, vitals, history) and:
 1. retrieves the most relevant passages from the ESI handbook and related
-   triage manuals for that presentation, and
-2. asks an LLM to read those passages and return a structured ESI level
+   triage manuals (e.g. from United Nations) for that presentation, and
+2. passes these pages/chunks of pages to an LLM, which based on the literature
+   and the user prompt, return a structured ESI level
    (1-5) plus a rationale citing the source material.
 
-It's meant as a decision-support aid, not a replacement for clinical
-judgement.
+It's meant as a decision-support aid, or as a help for nursing
+students practicing for an exam.
 
 ## How it works (example)
 
@@ -37,7 +38,7 @@ judgement.
 > bleeding from a ruptured ectopic pregnancy (ESI Handbook, Decision Point
 > B, "high-risk situation" list).
 
-Behind the scenes: the query is embedded/keyword-searched against the
+The query is embedded/keyword-searched (depends on the retrieval method used) against the
 knowledge base, the top-matching passages are put in the LLM's context, and
 the LLM is instructed to only answer using that context (or say "I don't
 know" / decline off-topic questions). See [docs/pipeline.md](docs/pipeline.md)
@@ -46,25 +47,42 @@ for the full flow.
 ## Overview
 
 ### Architecture
-- **Knowledge Base**: Medical triage manuals (PDFs) and handbooks → extracted & chunked
-- **Retrieval**: Hybrid approach comparing text search, vector search (general + medical embeddings) and hybrid search
-- **LLM**: GPT-4o-mini (configurable) for triage reasoning, with structured (ESI level + rationale) output
+- **Knowledge Base**: Medical triage manuals (PDFs), leaflets with triage algorithm depictions and handbooks, extracted & chunked
+- **Storage**: persistent storage using SQLite database
+- **Retrieval**: Hybrid approach comparing text search, vector search (general or medical embeddings) and hybrid search (a combination of each of these elements)
+- **LLM**: GPT-4o-mini (configurable) and GPT-4o for triage reasoning, with structured (ESI level + rationale) output
 - **Interface**: FastAPI (backend) + Streamlit (monitoring dashboard)
 - **Orchestration**: dlt for the data ingestion pipeline
+- **Containerization**: everything is in docker-compose
 
 See [docs/pipeline.md](docs/pipeline.md) for a diagram, plain-English
 description, and tool breakdown of each phase (ingestion, data prep,
 retrieval, retrieval evaluation, RAG, RAG evaluation), including evaluation
 results.
 
+<img width="1822" height="828" alt="image" src="https://github.com/user-attachments/assets/92e318af-d17a-4856-8dab-172ce1862299" />
+<img width="1846" height="825" alt="image" src="https://github.com/user-attachments/assets/02511127-d396-4584-87de-daffcd1552a2" />
+<img width="1847" height="792" alt="image" src="https://github.com/user-attachments/assets/6db01550-b813-461d-ae39-d820a96df8b7" />
+<img width="1867" height="792" alt="image" src="https://github.com/user-attachments/assets/fa389400-2ce7-41e9-8fe2-66da48dcac6a" />
+
+
+<img width="1800" height="601" alt="image" src="https://github.com/user-attachments/assets/6177a377-73bc-4430-8adc-caf1241ee43a" />
+<img width="1842" height="588" alt="image" src="https://github.com/user-attachments/assets/89775bd5-e50e-4c8b-939c-d926d7e98b3f" />
+<img width="1838" height="592" alt="image" src="https://github.com/user-attachments/assets/0093627f-99c9-4641-9508-cc142092b7a1" />
+<img width="1841" height="641" alt="image" src="https://github.com/user-attachments/assets/b16e26e9-ad21-4651-b283-d89e610fb858" />
+
+
+
+
 ### Evaluation Strategy
-- **Ground Truth**: hand-labeled triage queries (`data/test_queries.json`), based on NCLEX-style emergency nursing exam questions
+- **Ground Truth for retrieval evaluation**: triage queries (`data/test_queries.json['retrieval_queries']`). They were obtained 
+- **Ground Truth for LLM evaluation**: triage queries (`data/test_queries.json['llm_queries']`), the questions and answers are taken from various NCLEX-style emergency nursing exam questions
 - **Metrics**: retrieval hit rate/MRR, and LLM triage-level accuracy/answer rate
 - **Best Practices**: hybrid search (reciprocal rank fusion), comparing multiple embedding models, structured LLM output
 
 ## Evaluation Criteria
 
-For reviewers grading against the LLM Zoomcamp rubric, here is how each
+For reviewers grading against the LLM Zoomcamp criteria, here is how each
 criterion is addressed in this project:
 
 ### Problem Description
@@ -75,7 +93,7 @@ intended use and limitations are described in [The problem](#the-problem).
 
 ### Retrieval Flow
 
-The application retrieves passages from a local medical knowledge base using
+The application retrieves passages from a local medical persistent knowledge base using
 keyword search, two embedding-based searches, and hybrid search before calling
 the LLM. The complete flow is documented in [docs/pipeline.md, Retrieval](docs/pipeline.md#3-retrieval), [docs/pipeline.md, RAG](docs/pipeline.md#5-rag), and the [RAG Flow](#rag-flow) diagram below.
 
@@ -231,12 +249,6 @@ Results and evaluation metrics are stored in the SQLite db (`data/app.db`)
 and summarized in `data/retrieval_analysis.json` — see
 [docs/pipeline.md](docs/pipeline.md#7-retrieval-evaluation-results) for the
 current numbers.
-
-## Next Steps
-
-- [ ] Re-run retrieval/RAG evaluation on a larger ground-truth set
-- [ ] Document the API and dashboard (docs/pipeline.md)
-- [ ] Cloud deployment
 
 
 
