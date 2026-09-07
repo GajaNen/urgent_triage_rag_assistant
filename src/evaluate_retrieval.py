@@ -130,6 +130,13 @@ def mrr(relevance):
 
 def print_report(results: Dict, ground_truth: List[Dict]):
     """Print comprehensive analysis report."""
+    if not results:
+        raise RuntimeError(
+            "No retrieval results were found. Run ingestion and retrieval first, "
+            "for example: docker compose up --build, then "
+            "docker compose run --build --rm eval-retrieval."
+        )
+
     print("\n" + "=" * 80)
     print("RETRIEVAL PERFORMANCE ANALYSIS")
     print("=" * 80)
@@ -174,6 +181,11 @@ def print_report(results: Dict, ground_truth: List[Dict]):
 
     # compute relevance for each method
     relevance_batch = compute_relevance_batch(ground_truth, results)
+    if not relevance_batch:
+        raise RuntimeError(
+            "Retrieval results were loaded, but none matched the ground-truth queries. "
+            "Rerun ingestion and retrieval so the database and vector stores are synchronized."
+        )
 
     # compute and print overall relevance metrics
     print("\nRELEVANCE METRICS")

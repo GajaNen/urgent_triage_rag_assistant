@@ -249,15 +249,19 @@ pairwise overlap between methods.
 
 ## 8. RAG Evaluation Results
 
-Not run yet — `docker compose run eval` (or `python src/evaluate_llm.py`)
-logs each call to `llm_calls` in the SQLite db and prints an accuracy /
-answer-rate summary per model x retrieval approach, but doesn't persist that
-summary to a file. Once a run is final, paste the printed summary table
-here.
+The current LLM evaluation results are:
 
 | Model | Retrieval approach | Accuracy | Answer rate |
 |---|---|---|---|
-| _pending_ | | | |
+| gpt-4o | vector_search_medical | 91.18% | 100.00% |
+| gpt-4o | hybrid_search_text_and_vector_medical | 85.29% | 100.00% |
+| gpt-4o | text_search | 82.35% | 100.00% |
+| gpt-4o-mini | hybrid_search_text_and_vector_medical | 67.65% | 100.00% |
+| gpt-4o-mini | vector_search_medical | 67.65% | 100.00% |
+| gpt-4o-mini | text_search | 67.65% | 100.00% |
+
+**Best combination:** `gpt-4o` with `vector_search_medical` — **91.18% accuracy**
+with a **100.00% answer rate**.
 
 ---
 
@@ -270,126 +274,3 @@ The FastAPI service exposes `/query` for RAG-based ESI assessments, `/feedback` 
 ## 10. Dashboard
 
 The Streamlit dashboard sends patient presentations to the API, displays the generated ESI assessment, collects feedback, and visualizes query cost, token usage, latency, answer rate, and feedback.
-
----
-
-## 2. Data Preparation
-
-```mermaid
-flowchart TD
-    A[Start: data_prep.py / DataPrep.run] --> B{redact=True?}
-    B -- Yes --> C[Redact PDF regions\npymupdf add_redact_annot]
-    B -- No --> D
-    C --> D[Load PDFs\npymupdf extract text per page]
-    D --> E[Chunk documents\nlangchain RecursiveCharacterTextSplitter\nsize=500, overlap=100]
-    E --> F[Assign chunk_id metadata]
-    F --> G[Create embeddings\nHuggingFace: general MiniLM + medical PubMedBERT]
-    G --> H[Build FAISS vector stores\none per embedding model]
-    F --> I[Save chunks + FTS5 index\nSQLite: chunks table]
-    H --> J[Save vector stores to disk\ndata/vector_store_general, data/vector_store_medical]
-    I --> K[Data prep complete]
-    J --> K
-```
-
----
-
-## 3. Retrieval
-
-```mermaid
-flowchart TD
-    A[Query] --> B[Retriever.retrieve_query]
-    B --> C[text_search\nSQLite FTS5 / BM25]
-    B --> D[vector_search: general\nFAISS + MiniLM embeddings]
-    B --> E[vector_search: medical\nFAISS + PubMedBERT embeddings]
-    B --> F{ncbi_search enabled?}
-    F -- Yes --> G[search_ncbi\nNCBI E-utilities esearch + efetch]
-    F -- No --> H[skip]
-    C --> I[hybrid_search\nReciprocal Rank Fusion]
-    D --> I
-    E --> I
-    C --> J[Results per method]
-    D --> J
-    E --> J
-    I --> J
-    G --> J
-    J --> K[Return dict: method -> ranked chunks/docs]
-```
-
----
-
-## 4. Retrieval Evaluation
-
-```mermaid
-flowchart TD
-    A[test_queries.json\nretrieval_queries ground truth] --> B[Retriever.retrieve_query\nfor every query, every method]
-    B --> C[Save batch to SQLite\nretrieval_results table]
-    C --> D[evaluate_retrieval.py]
-    D --> E[compute_relevance_batch\nchunk_id match vs ground truth]
-    E --> F[hit_rate per method]
-    E --> G[mrr per method]
-    C --> H[analyze_retrieval.py]
-    H --> I[analyze_overlap\nJaccard similarity between methods]
-    H --> J[summarize_performance\navg similarity score per method]
-    H --> K[compare_sources\nsource distribution per method]
-    F --> L[retrieval_analysis.json]
-    G --> L
-    I --> L
-    J --> L
-    K --> L
-```
-
----
-
-## 5. RAG
-
-```mermaid
-flowchart TD
-    A[User query] --> B[RAGBase.search\nRetriever.retrieve_query]
-    B --> C[build_context\nselect retrieval_method results\n+ NCBI results if enabled]
-    C --> D[build_prompt\nINSTRUCTIONS + PROMPT_TEMPLATE]
-    D --> E[OpenAI chat completion\nstructured output: ESIAssessment]
-    E --> F[Parse esi_level + rationale]
-    F --> G[Compute tokens + cost\nPRICING table]
-    F --> H[Log call to SQLite\nllm_calls table]
-    G --> H
-    H --> I[Return answer to caller\nAPI / dashboard]
-```
-
----
-
-## 6. RAG Evaluation
-
-```mermaid
-flowchart TD
-    A[test_queries.json\nllm_queries ground truth] --> B[For each model in EVAL_MODELS]
-    B --> C[For each retrieval approach\nhybrid / vector_medical / text]
-    C --> D[RAGBase.rag per query\nsee RAG phase]
-    D --> E[Call logged to\nllm_calls table]
-    E --> F[summarize_run\naccuracy vs ground truth\nanswer_rate]
-    F --> G[Aggregate summaries\nacross model x approach]
-    G --> H[Report best combination\nby accuracy]
-```
-
----
-
-## 7. Retrieval Evaluation Results
-
-TODO, blocked on final results.
-
----
-
-## 8. RAG Evaluation Results
-
-TODO, blocked on final results.
-
----
-
-## 9. API
-
-TODO.
-
----
-
-## 10. Dashboard
-
-TODO.
