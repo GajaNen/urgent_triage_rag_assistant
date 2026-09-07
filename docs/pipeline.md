@@ -263,13 +263,13 @@ here.
 
 ## 9. API
 
-TODO.
+The FastAPI service exposes `/query` for RAG-based ESI assessments, `/feedback` for user reactions, and `/health` for Docker readiness checks.
 
 ---
 
 ## 10. Dashboard
 
-TODO.
+The Streamlit dashboard sends patient presentations to the API, displays the generated ESI assessment, collects feedback, and visualizes query cost, token usage, latency, answer rate, and feedback.
 
 ---
 
