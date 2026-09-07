@@ -7,6 +7,9 @@ presentation. It runs as six phases: ingest new source documents, prepare
 retrieval quality, generate a triage answer with an LLM (RAG), and evaluate
 that LLM output. Each phase below shows its flow and the tools used.
 
+<img width="1888" height="840" alt="image" src="https://github.com/user-attachments/assets/00fb894e-cce9-4066-b0d4-518e80e41c20" />
+
+
 ## Table of Contents
 
 1. [Ingestion](#1-ingestion)
