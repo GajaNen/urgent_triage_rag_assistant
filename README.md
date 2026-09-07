@@ -60,22 +60,10 @@ description, and tool breakdown of each phase (ingestion, data prep,
 retrieval, retrieval evaluation, RAG, RAG evaluation), including evaluation
 results.
 
-<img width="1822" height="828" alt="image" src="https://github.com/user-attachments/assets/92e318af-d17a-4856-8dab-172ce1862299" />
-<img width="1846" height="825" alt="image" src="https://github.com/user-attachments/assets/02511127-d396-4584-87de-daffcd1552a2" />
-<img width="1847" height="792" alt="image" src="https://github.com/user-attachments/assets/6db01550-b813-461d-ae39-d820a96df8b7" />
-<img width="1867" height="792" alt="image" src="https://github.com/user-attachments/assets/fa389400-2ce7-41e9-8fe2-66da48dcac6a" />
-
-
-<img width="1800" height="601" alt="image" src="https://github.com/user-attachments/assets/6177a377-73bc-4430-8adc-caf1241ee43a" />
-<img width="1842" height="588" alt="image" src="https://github.com/user-attachments/assets/89775bd5-e50e-4c8b-939c-d926d7e98b3f" />
-<img width="1838" height="592" alt="image" src="https://github.com/user-attachments/assets/0093627f-99c9-4641-9508-cc142092b7a1" />
-<img width="1841" height="641" alt="image" src="https://github.com/user-attachments/assets/b16e26e9-ad21-4651-b283-d89e610fb858" />
-
-
-
-
 ### Evaluation Strategy
-- **Ground Truth for retrieval evaluation**: triage queries (`data/test_queries.json['retrieval_queries']`). They were obtained 
+- **Ground Truth for retrieval evaluation**: triage queries (`data/test_queries.json['retrieval_queries']`). They were obtained from the ESI handbook (in the knowledge base):
+  they were the examples in the book, so we knew which chunk contains the answer, a correct chunk from the DB was identified and written to the json file. The parts containing
+  these information were redacted in the pdf and only the redcated pdf was used as a part of the knowldedge base. 
 - **Ground Truth for LLM evaluation**: triage queries (`data/test_queries.json['llm_queries']`), the questions and answers are taken from various NCLEX-style emergency nursing exam questions
 - **Metrics**: retrieval hit rate/MRR, and LLM triage-level accuracy/answer rate
 - **Best Practices**: hybrid search (reciprocal rank fusion), comparing multiple embedding models, structured LLM output
@@ -105,8 +93,8 @@ for the application. See [Retrieval Evaluation](docs/pipeline.md#4-retrieval-eva
 
 ### LLM Evaluation
 
-The project evaluates multiple LLM and retrieval combinations against known ESI
-answers, measuring both triage-level accuracy and answer rate. The procedure
+The project evaluates 2 LLMs and 3 retrieval methods, together 6 combinations, against known ESI
+answers, measuring both triage-level accuracy and answer rate (how many times ESI was a part of the response). The procedure
 and results are in [RAG Evaluation](docs/pipeline.md#6-rag-evaluation) and [the results](docs/pipeline.md#8-rag-evaluation-results).
 
 ### Interface
@@ -141,11 +129,12 @@ pipeline. See [docs/setup.md](docs/setup.md) and [docs/usage.md](docs/usage.md).
 ### Best Practices
 
 Hybrid search is implemented and evaluated by combining keyword and vector
-retrieval with reciprocal rank fusion; the details are in [Retrieval](docs/pipeline.md#3-retrieval). Document re-ranking and user query rewriting were considered but are not currently implemented.
+retrieval with reciprocal rank fusion; the details are in [Retrieval](docs/pipeline.md#3-retrieval). 
+Document re-ranking and user query rewriting were considered but are not currently implemented.
 
 ### Bonus Points
 
-No cloud deployment or additional bonus feature is currently included; the
+No cloud deployment is currently included; the
 application is designed to run locally or through Docker Compose.
 
 ### Knowledge Base
@@ -193,9 +182,20 @@ See [docs/pipeline.md](docs/pipeline.md#3-retrieval) for retrieval details and
 
 ## Demo
 
-*TODO: add a screenshot of the Streamlit dashboard and/or a short screen
-recording of a query going through the API/dashboard here once the UI is
-finalized.*
+Here are screenshots demonstrating the response to a relevant and irrelevant prompt.
+You can also see user feedback buttons in action:
+
+<img width="1822" height="828" alt="image" src="https://github.com/user-attachments/assets/92e318af-d17a-4856-8dab-172ce1862299" />
+<img width="1846" height="825" alt="image" src="https://github.com/user-attachments/assets/02511127-d396-4584-87de-daffcd1552a2" />
+
+Here are screenshots demonstrating the Dashboard, which contains 5 plots.
+
+<img width="1847" height="792" alt="image" src="https://github.com/user-attachments/assets/6db01550-b813-461d-ae39-d820a96df8b7" />
+<img width="1867" height="792" alt="image" src="https://github.com/user-attachments/assets/fa389400-2ce7-41e9-8fe2-66da48dcac6a" />
+<img width="1800" height="601" alt="image" src="https://github.com/user-attachments/assets/6177a377-73bc-4430-8adc-caf1241ee43a" />
+<img width="1842" height="588" alt="image" src="https://github.com/user-attachments/assets/89775bd5-e50e-4c8b-939c-d926d7e98b3f" />
+<img width="1838" height="592" alt="image" src="https://github.com/user-attachments/assets/0093627f-99c9-4641-9508-cc142092b7a1" />
+<img width="1841" height="641" alt="image" src="https://github.com/user-attachments/assets/b16e26e9-ad21-4651-b283-d89e610fb858" />
 
 ## Quick Start
 
@@ -209,7 +209,7 @@ docker compose up --build
 ```
 
 This gives you the API at http://localhost:8000/docs and the dashboard at
-http://localhost:8501. See `.env.example` for all supported environment
+http://localhost:8501. See `.env` for all supported environment
 variables.
 
 To run the pieces manually instead (e.g. for development), see
