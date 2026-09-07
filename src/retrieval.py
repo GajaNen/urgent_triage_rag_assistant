@@ -43,6 +43,7 @@ class Retriever:
         self.ncbi_search = ncbi_search
         self.ncbi_api_key = ncbi_api_key
         self.chunks = self.load_chunks()
+        self.chunks_by_id = {int(chunk["id"]): chunk for chunk in self.chunks}
         self.vector_stores = self.load_vector_stores()
         self.results = {}
         
@@ -90,6 +91,13 @@ class Retriever:
                 ranked.append((chunk_id, score))
 
         return ranked
+
+    def _chunk_for_id(self, chunk_id: int) -> Optional[Dict]:
+        """Return a stored chunk by its database ID, or None for stale index entries."""
+        try:
+            return self.chunks_by_id.get(int(chunk_id))
+        except (TypeError, ValueError):
+            return None
 
     # this way this function can be used as a standalong
     # but maybe it could take text and vector results as input already
@@ -204,15 +212,16 @@ class Retriever:
         # in the hybrid search, fusing k * 2 results, to eliminate some of random noise
         text_results = self.text_search(query, k=k * 2)
         # for actual text / vector results we take only top k
-        results["text_search"] = [
-            {
-                "chunk_id": cid,
-                "score": score,
-                "content": self.chunks[cid]["content"],
-                "source": self.chunks[cid]["source"]
-            }
-            for cid, score in text_results[:k]
-        ]
+        results["text_search"] = []
+        for cid, score in text_results[:k]:
+            chunk = self._chunk_for_id(cid)
+            if chunk is not None:
+                results["text_search"].append({
+                    "chunk_id": cid,
+                    "score": score,
+                    "content": chunk["content"],
+                    "source": chunk["source"],
+                })
 
         # Vector search (using multiple embeddings based on different models)
         for model_name in EMBEDDING_MODELS:
@@ -221,15 +230,16 @@ class Retriever:
                 vector_results = self.vector_search(query, model_name=model_name, k=k * 2)
                 all_vector_results[model_name] = vector_results
                 #print("vector_results after adding model_name:", model_name, vector_results)
-                results[f"vector_search_{model_name}"] = [
-                    {
-                        "chunk_id": cid,
-                        "score": float(score),
-                        "content": self.chunks[cid]["content"],
-                        "source": self.chunks[cid]["source"]
-                    }
-                    for cid, score in vector_results[:k]
-                ]
+                results[f"vector_search_{model_name}"] = []
+                for cid, score in vector_results[:k]:
+                    chunk = self._chunk_for_id(cid)
+                    if chunk is not None:
+                        results[f"vector_search_{model_name}"].append({
+                            "chunk_id": cid,
+                            "score": float(score),
+                            "content": chunk["content"],
+                            "source": chunk["source"],
+                        })
 
         # Hybrid search: merge text & vector search results using reciprocal rank fusion
         # merge vecg vecm, vecg text, vecm text, vecg vecm text
@@ -248,15 +258,16 @@ class Retriever:
             # for hybrid search we also take only top k results based on top k * 2
             # of each individual method
             hybrid_results = self.hybrid_search(hybrid_lists, k=k)
-            results[f"hybrid_search_{hybrid_name}"] = [
-                {
-                    "chunk_id": cid,
-                    "score": float(score),
-                    "content": self.chunks[cid]["content"],
-                    "source": self.chunks[cid]["source"]
-                }
-                for cid, score in hybrid_results
-            ]
+            results[f"hybrid_search_{hybrid_name}"] = []
+            for cid, score in hybrid_results:
+                chunk = self._chunk_for_id(cid)
+                if chunk is not None:
+                    results[f"hybrid_search_{hybrid_name}"].append({
+                        "chunk_id": cid,
+                        "score": float(score),
+                        "content": chunk["content"],
+                        "source": chunk["source"],
+                    })
 
         # NCBI live PubMed search
         if self.ncbi_search:

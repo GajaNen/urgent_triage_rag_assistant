@@ -23,10 +23,15 @@ with query_tab:
     query_text = st.text_area("Describe the patient's presentation:", height=150)
     if st.button("Get ESI assessment") and query_text.strip():
         with st.spinner("Retrieving context and generating assessment..."):
-            response = requests.post(f"{API_URL}/query", json={"query": query_text}, timeout=60)
-            response.raise_for_status()
-            st.session_state["last_result"] = response.json()
-            st.session_state["last_query"] = query_text
+            try:
+                response = requests.post(f"{API_URL}/query", json={"query": query_text}, timeout=60)
+                response.raise_for_status()
+            except requests.RequestException as error:
+                detail = error.response.text if error.response is not None else str(error)
+                st.error(f"The API could not process this query: {detail}")
+            else:
+                st.session_state["last_result"] = response.json()
+                st.session_state["last_query"] = query_text
 
     if "last_result" in st.session_state:
         result = st.session_state["last_result"]
@@ -66,22 +71,38 @@ with dashboard_tab:
     else:
         df = pd.DataFrame(calls)
         df["created_at"] = pd.to_datetime(df["created_at"])
+        df = df.sort_values("created_at").reset_index(drop=True)
+        df["query_label"] = [f"Query {index + 1}: {query[:45]}" for index, query in enumerate(df["query"])]
 
         st.subheader("1. Cost per query over time")
-        st.line_chart(df.set_index("created_at")["cost_usd"])
+        cost_chart = df[["created_at", "cost_usd"]].rename(columns={"created_at": "Query time", "cost_usd": "Cost (USD)"})
+        st.line_chart(cost_chart, x="Query time", y="Cost (USD)")
 
         st.subheader("2. Token usage per query")
-        st.bar_chart(df.set_index("created_at")[["prompt_tokens", "completion_tokens"]])
+        token_chart = df[["query_label", "prompt_tokens", "completion_tokens"]].rename(columns={
+            "query_label": "Query",
+            "prompt_tokens": "Prompt tokens",
+            "completion_tokens": "Completion tokens",
+        })
+        st.bar_chart(token_chart, x="Query", y=["Prompt tokens", "Completion tokens"])
 
         st.subheader("3. Response latency distribution")
-        st.bar_chart(df["latency_seconds"].value_counts(bins=10).sort_index())
+        latency_counts = df["latency_seconds"].value_counts(bins=10).sort_index()
+        latency_chart = pd.DataFrame({
+            "Latency range (seconds)": [str(interval) for interval in latency_counts.index],
+            "Number of queries": latency_counts.to_numpy(),
+        })
+        st.bar_chart(latency_chart, x="Latency range (seconds)", y="Number of queries")
 
         st.subheader("4. Answer rate by approach")
-        st.bar_chart(df.groupby("approach")["answered"].mean())
+        answer_rate = df.groupby("approach", as_index=False)["answered"].mean()
+        answer_rate = answer_rate.rename(columns={"approach": "Retrieval approach", "answered": "Answer rate"})
+        st.bar_chart(answer_rate, x="Retrieval approach", y="Answer rate")
 
         st.subheader("5. User feedback")
         feedback_df = pd.DataFrame(feedback_rows, columns=["reaction", "count"])
         if not feedback_df.empty:
-            st.bar_chart(feedback_df.set_index("reaction"))
+            feedback_df = feedback_df.rename(columns={"reaction": "Feedback reaction", "count": "Number of reactions"})
+            st.bar_chart(feedback_df, x="Feedback reaction", y="Number of reactions")
         else:
             st.info("No feedback collected yet.")
