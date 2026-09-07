@@ -240,10 +240,19 @@ are from the current run in the repo — replace if you re-run the evaluation.*
 | vector_search_medical | 0.091 | 0.091 |
 
 Text search currently comes out ahead on both metrics, though all methods
-score low in absolute terms — the ground-truth set is small (11 queries), so
-these numbers should be treated as directional rather than conclusive. See
+score low in absolute terms. The ground-truth set is small (11 queries), so
+these numbers should be treated as directional rather than conclusive.
+
+See
 `data/retrieval_analysis.json` for per-method source distribution and
 pairwise overlap between methods.
+
+Medical domain queries frequently rely on precise terms, acronyms, scale numbers, or specific symptoms (e.g., "ESI level 2", "Glasgow Coma Scale", "epinephrine dosage"). Keyword search matches these exact terms directly, whereas vector embeddings compress exact words into dense representations and can lose specific technical terms.
+
+Hybrid Search (in our case BM25 + Vector medical via RRF) is industry standard: keyword search handles exact medical terminology and acronyms, while vector search handles semantic variations and paraphrasing.
+That's why we will compare in LLM evaluation text search, medical vector search and the combination
+of the two.
+
 
 ---
 
