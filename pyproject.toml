@@ -2,7 +2,7 @@
 name = "urgent-triage-assistant"
 version = "0.1.0"
 description = "RAG-based urgent care triage assistant"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 dependencies = [
     "langchain>=0.0.300",
@@ -10,7 +10,7 @@ dependencies = [
     "langchain-community>=0.0.5",
     "sentence-transformers>=2.2.0",
     "faiss-cpu>=1.7.4",
-    "pypdf>=3.16.0",
+    "pymupdf>=1.23.0",
     "pydantic>=2.0.0",
     "python-dotenv>=1.0.0",
     "fastapi>=0.100.0",
@@ -20,6 +20,9 @@ dependencies = [
     "numpy>=1.24.0",
     "requests>=2.31.0",
     "biopython>=1.81",
+    "polars>=1.44.1",
+    "dlt[duckdb]>=1.0.0",
+    "openai>=1.55.0",
 ]
 
 [project.optional-dependencies]
@@ -29,3 +32,9 @@ dev = [
     "ruff>=0.0.280",
 ]
 
+[build-system]
+requires = ["uv_build>=0.5.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = false

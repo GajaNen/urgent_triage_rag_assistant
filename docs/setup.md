@@ -4,6 +4,15 @@
 
 - Python 3.9+
 - [uv](https://docs.astral.sh/uv/) for dependency management
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (includes the
+  `docker compose` plugin) — only needed if you want to run the app via
+  `docker compose` instead of running `api.py`/`dashboard.py` directly. On
+  Windows/macOS, installing Docker Desktop is enough; on Linux, install the
+  `docker-compose-plugin` package alongside the Docker Engine. Verify with:
+
+  ```bash
+  docker compose version
+  ```
 
 ## Installation
 
@@ -15,6 +24,13 @@ uv sync
 source .venv/bin/activate  # macOS/Linux
 # OR
 .venv\Scripts\activate  # Windows
+```
+
+You may need to run this command is your execution policy is set to ```Restricted```.
+
+```bash
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
 ```
 
 ## Environment Setup
