@@ -260,7 +260,7 @@ The current LLM evaluation results are:
 | gpt-4o-mini | vector_search_medical | 67.65% | 100.00% |
 | gpt-4o-mini | text_search | 67.65% | 100.00% |
 
-**Best combination:** `gpt-4o` with `vector_search_medical` — **91.18% accuracy**
+**Best combination:** `gpt-4o` with `vector_search_medical`, since it achieves **91.18% accuracy**
 with a **100.00% answer rate**.
 
 ---
