@@ -40,7 +40,7 @@ To run the retrieval evaluation (retrieves the chunks for the test queries with
 every method, then reports hit rate/MRR against ground truth (```test_queries.json```) and overlap and some summary statistics of the methods):
 
 ```bash
-docker compose run eval-retrieval
+docker compose run --build --rm eval-retrieval
 ```
 
 ## LLM Evaluation
@@ -50,7 +50,7 @@ three retrieval methods are used (together 6 different combinations) and evaluat
 ground truth (```test_queries.json```) to obtain the combination with the highest accuracy.
 
 ```bash
-docker compose run eval
+docker compose run --build --rm eval
 ```
 
 
