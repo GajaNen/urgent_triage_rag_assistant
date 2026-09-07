@@ -36,17 +36,15 @@ flowchart TD
     G --> H[Write new fingerprint\nto last_ingested.txt]
 ```
 
+Ingestion workflow was automated using ```dlt```.
+
 Watches the `knowledge_base/` folder and only re-runs data preparation when a
-PDF was added, removed, or changed, so the (slow) chunking/embedding step
+PDF is added, removed, or changed, so the (slow) chunking/embedding step
 isn't repeated on every container start.
 
 **Tools used:** [dlt](https://dlthub.com/) for the pipeline/state, DuckDB as
 dlt's local destination for the file-tracking table, plain `hashlib` for
 change detection.
-
-**Not used:** Airflow — this is one linear job with no branching, retries-per-task,
-or cross-DAG dependencies, so a full scheduler + webserver + metadata DB would
-be unnecessary operational overhead for a single-container batch job.
 
 ---
 
