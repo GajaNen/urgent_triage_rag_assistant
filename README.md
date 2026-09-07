@@ -171,7 +171,7 @@ flowchart TD
     B -. optional .-> H[PubMed NCBI search]
     H -. supplementary abstracts .-> G
     G --> I[Prompt with instructions and context]
-    I --> J[OpenAI gpt-4o-mini]
+    I --> J[OpenAI gpt-4o or mini]
     J --> K[Structured ESIAssessment<br/>ESI level + rationale]
     K --> L[API or Streamlit dashboard]
     K --> M[SQLite monitoring and evaluation logs]
