@@ -64,21 +64,114 @@ results.
 
 ## Evaluation Criteria
 
-For reviewers grading against the LLM Zoomcamp rubric, here's where each
-criterion is addressed:
+For reviewers grading against the LLM Zoomcamp rubric, here is how each
+criterion is addressed in this project:
 
-| Criterion | Where to look |
-|---|---|
-| Problem description | This README (above) |
-| Retrieval flow (knowledge base + LLM) | [docs/pipeline.md](docs/pipeline.md#3-retrieval) (retrieval), [#5](docs/pipeline.md#5-rag) (RAG) |
-| Retrieval evaluation (multiple approaches) | [docs/pipeline.md §4](docs/pipeline.md#4-retrieval-evaluation) + [§7 results](docs/pipeline.md#7-retrieval-evaluation-results) — 7 retrieval methods compared |
-| LLM evaluation (multiple approaches) | [docs/pipeline.md §6](docs/pipeline.md#6-rag-evaluation) + [§8 results](docs/pipeline.md#8-rag-evaluation-results) — multiple models x retrieval approaches compared |
-| Interface | FastAPI ([src/api.py](src/api.py)) + Streamlit dashboard ([src/dashboard.py](src/dashboard.py)) |
-| Ingestion pipeline (automated) | [docs/pipeline.md §1](docs/pipeline.md#1-ingestion) — dlt-based, change-detecting |
-| Monitoring | Streamlit dashboard + user feedback logging (`feedback` table, see [src/db.py](src/db.py)) |
-| Containerization | `docker-compose.yml` — all services (ingest, api, dashboard, eval) run through it |
-| Reproducibility | [docs/setup.md](docs/setup.md), [docs/usage.md](docs/usage.md), pinned `uv.lock` |
-| Best practices | Hybrid search ✅ (see §3); document re-ranking ❌; query rewriting ❌ |
+### Problem Description
+
+The README explains the emergency-department triage problem, the role of ESI
+levels, and how this assistant supports a nurse under time pressure. The
+intended use and limitations are described in [The problem](#the-problem).
+
+### Retrieval Flow
+
+The application retrieves passages from a local medical knowledge base using
+keyword search, two embedding-based searches, and hybrid search before calling
+the LLM. The complete flow is documented in [docs/pipeline.md, Retrieval](docs/pipeline.md#3-retrieval), [docs/pipeline.md, RAG](docs/pipeline.md#5-rag), and the [RAG Flow](#rag-flow) diagram below.
+
+### Retrieval Evaluation
+
+Seven retrieval methods are compared against hand-labeled queries using hit
+rate, MRR, overlap, and source analysis, with the strongest approach selected
+for the application. See [Retrieval Evaluation](docs/pipeline.md#4-retrieval-evaluation) and [the results](docs/pipeline.md#7-retrieval-evaluation-results).
+
+### LLM Evaluation
+
+The project evaluates multiple LLM and retrieval combinations against known ESI
+answers, measuring both triage-level accuracy and answer rate. The procedure
+and results are in [RAG Evaluation](docs/pipeline.md#6-rag-evaluation) and [the results](docs/pipeline.md#8-rag-evaluation-results).
+
+### Interface
+
+The system provides a FastAPI endpoint for programmatic queries and a Streamlit
+dashboard for interactive use and monitoring. See [src/api.py](src/api.py), [src/dashboard.py](src/dashboard.py), and [docs/pipeline.md, API and Dashboard](docs/pipeline.md#9-api).
+
+### Ingestion Pipeline
+
+The dlt pipeline detects added, removed, or changed PDFs and automatically
+triggers data preparation only when the source corpus changes. Its flow is
+described in [Ingestion](docs/pipeline.md#1-ingestion).
+
+### Monitoring
+
+SQLite logs retrieval results, LLM calls, token and cost metrics, latency, and
+user feedback, while the Streamlit dashboard presents operational and
+evaluation views. See [Dashboard](docs/pipeline.md#10-dashboard) and [src/db.py](src/db.py).
+
+### Containerization
+
+Docker Compose runs the ingestion, API, dashboard, and evaluation services from
+the project configuration. The commands and service URLs are documented in
+[docs/usage.md](docs/usage.md).
+
+### Reproducibility
+
+The repository includes setup and usage instructions, pinned dependencies in
+`uv.lock`, evaluation data, and the local source corpus needed to recreate the
+pipeline. See [docs/setup.md](docs/setup.md) and [docs/usage.md](docs/usage.md).
+
+### Best Practices
+
+Hybrid search is implemented and evaluated by combining keyword and vector
+retrieval with reciprocal rank fusion; the details are in [Retrieval](docs/pipeline.md#3-retrieval). Document re-ranking and user query rewriting were considered but are not currently implemented.
+
+### Bonus Points
+
+No cloud deployment or additional bonus feature is currently included; the
+application is designed to run locally or through Docker Compose.
+
+### Knowledge Base
+
+The local knowledge base contains PDF guidance used for urgent-care and
+emergency triage: the **Emergency Severity Index (ESI) Handbook, 5th Edition**;
+the **Interagency Integrated Triage Tool (IITT) adult, pediatric, reference
+card, and mass-casualty guidance**; and the **MCM triage guidance note**. The
+ESI handbook is the primary source for assigning ESI levels, while the IITT and
+other guidance broaden coverage for adult, pediatric, and mass-casualty
+presentations. The redacted ESI handbook is used for processing; the unredacted
+copy is retained as the original source.
+
+### RAG Flow
+
+For a patient presentation, the application searches the local SQLite FTS5
+index and two FAISS vector indices, combines the selected rankings with
+reciprocal rank fusion, and sends the retrieved passages to the configured
+OpenAI model. The model returns a structured ESI level and rationale, and the
+request plus token, cost, latency, and prediction data are logged for later
+evaluation and dashboard monitoring. Optional PubMed retrieval can add live
+supplementary abstracts.
+
+```mermaid
+flowchart TD
+    A[Patient presentation] --> B[Retriever]
+    B --> C[SQLite FTS5 keyword search]
+    B --> D[FAISS general vectors<br/>MiniLM]
+    B --> E[FAISS medical vectors<br/>PubMedBERT]
+    C --> F[Reciprocal Rank Fusion]
+    D --> F
+    E --> F
+    F --> G[Top local triage passages]
+    B -. optional .-> H[PubMed NCBI search]
+    H -. supplementary abstracts .-> G
+    G --> I[Prompt with instructions and context]
+    I --> J[OpenAI gpt-4o-mini]
+    J --> K[Structured ESIAssessment<br/>ESI level + rationale]
+    K --> L[API or Streamlit dashboard]
+    K --> M[SQLite monitoring and evaluation logs]
+```
+
+See [docs/pipeline.md](docs/pipeline.md#3-retrieval) for retrieval details and
+[docs/pipeline.md](docs/pipeline.md#5-rag) for the generation step.
 
 ## Demo
 
@@ -144,4 +237,6 @@ current numbers.
 - [ ] Re-run retrieval/RAG evaluation on a larger ground-truth set
 - [ ] Document the API and dashboard (docs/pipeline.md)
 - [ ] Cloud deployment
+
+
 

@@ -36,17 +36,23 @@ with query_tab:
 
         col1, col2 = st.columns(2)
         if col1.button("Helpful"):
-            requests.post(f"{API_URL}/feedback", json={
+            feedback_response = requests.post(f"{API_URL}/feedback", json={
                 "query_id": result["query_id"],
                 "reaction": "up",
             })
-            st.success("Thanks for the feedback!")
+            if feedback_response.ok:
+                st.success("Thanks for the feedback!")
+            else:
+                st.error(f"Failed to record feedback: {feedback_response.status_code} {feedback_response.text}")
         if col2.button("Not helpful"):
-            requests.post(f"{API_URL}/feedback", json={
+            feedback_response = requests.post(f"{API_URL}/feedback", json={
                 "query_id": result["query_id"],
                 "reaction": "down",
             })
-            st.success("Thanks for the feedback!")
+            if feedback_response.ok:
+                st.success("Thanks for the feedback!")
+            else:
+                st.error(f"Failed to record feedback: {feedback_response.status_code} {feedback_response.text}")
 
 with dashboard_tab:
     with db.get_connection() as conn:

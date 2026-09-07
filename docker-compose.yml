@@ -3,6 +3,9 @@ services:
     build: .
     command: python ingest_pipeline.py
     env_file: .env
+    environment:
+      # cache HF model downloads on the mounted data/ volume, so they survive container recreation
+      - HF_HOME=/app/data/hf_cache
     volumes:
       - ./data:/app/data
       - ./knowledge_base:/app/knowledge_base
@@ -13,12 +16,22 @@ services:
     ports:
       - "8000:8000"
     env_file: .env
+    environment:
+      - HF_HOME=/app/data/hf_cache
     volumes:
       - ./data:/app/data
       - ./knowledge_base:/app/knowledge_base
     depends_on:
       ingest:
         condition: service_completed_successfully
+    healthcheck:
+      # api takes a while to load the FAISS/embedding models before it can serve requests
+      # (longer still on a cold HF cache, e.g. first run or a fresh data/ volume)
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/docs', timeout=3)"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+      start_period: 60s
 
   dashboard:
     build: .
@@ -31,13 +44,16 @@ services:
     volumes:
       - ./data:/app/data
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
   eval:
     build: .
     command: python evaluate_llm.py
     profiles: ["tools"]
     env_file: .env
+    environment:
+      - HF_HOME=/app/data/hf_cache
     volumes:
       - ./data:/app/data
       - ./knowledge_base:/app/knowledge_base
@@ -47,6 +63,8 @@ services:
     command: sh -c "python retrieval.py && python evaluate_retrieval.py"
     profiles: ["tools"]
     env_file: .env
+    environment:
+      - HF_HOME=/app/data/hf_cache
     volumes:
       - ./data:/app/data
       - ./knowledge_base:/app/knowledge_base

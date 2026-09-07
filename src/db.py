@@ -67,12 +67,20 @@ CREATE TABLE IF NOT EXISTS feedback (
 """
 
 
+def _migrate_legacy_feedback_table(conn: sqlite3.Connection) -> None:
+    """Rebuild `feedback` if it predates the `call_id` column (old dev DBs only had query/response)."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(feedback)").fetchall()}
+    if columns and "call_id" not in columns:
+        conn.execute("DROP TABLE feedback")
+
+
 @contextmanager
 def get_connection() -> Iterator[sqlite3.Connection]:
     """Yield a SQLite connection with schema ensured, committing on success."""
     DB_PATH.parent.mkdir(exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     try:
+        _migrate_legacy_feedback_table(conn)
         conn.executescript(SCHEMA)
         yield conn
         conn.commit()

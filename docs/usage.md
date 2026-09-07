@@ -23,6 +23,17 @@ otherwise), then starts:
 against. `knowledge_base/` must already contain the source PDFs though;
 `ingest` reads from there, not from `data/`.
 
+On first run, `api` needs a couple of minutes to download and load the
+embedding models before it's ready — `dashboard` waits for `api`'s healthcheck
+to pass before starting, so you shouldn't hit a connection-refused error from
+the dashboard; just give it a moment. Downloaded models are cached under
+`data/hf_cache/`, so subsequent runs start faster.
+
+To stop the app, `Ctrl+C` then `docker compose down` (your data in `data/`
+persists on disk either way). If you add/remove/change a PDF in
+`knowledge_base/`, just re-run `docker compose up --build` — `ingest` detects
+the change and reprocesses automatically.
+
 To re-run the LLM evaluation batch on demand (not part of the default `up`):
 
 ```bash
