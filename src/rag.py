@@ -15,6 +15,7 @@ dotenv.load_dotenv()
 # USD per 1M tokens. Update if pricing changes.
 PRICING = {
     "gpt-4o-mini": {"input": 0.15, "output": 0.60},
+    "gpt-4o": {"input": 2.50, "output": 10.00},
 }
 
 INSTRUCTIONS = '''
@@ -133,13 +134,15 @@ class RAGBase:
         # fall back to the class's default (hybrid_search_text_and_vector_medical)
         retrieval_method = retrieval_method or self.retrieval_method
 
-        # Always include the selected local retrieval method and NCBI results.
+        # Always include the selected local retrieval method
         # loop through the results (list of dicts) and extract source and content.
         for doc in retrieval_results.get(retrieval_method, []):
             context_blocks.append(f"[Source: {doc['source']}]\n{doc['content']}")
 
-        for doc in retrieval_results.get("ncbi_search", []):
-            context_blocks.append(f"[Source: {doc['source']} | URL: {doc['url']}]\n{doc['content']}")
+        # Include NCBI search results if enabled
+        if self.retriever.ncbi_search:
+            for doc in retrieval_results.get("ncbi_search", []):
+                context_blocks.append(f"[Source: {doc['source']} | URL: {doc['url']}]\n{doc['content']}")
 
         return "\n\n---\n\n".join(context_blocks)
 

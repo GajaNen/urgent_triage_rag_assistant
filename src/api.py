@@ -4,6 +4,7 @@ assessment, and leave feedback. Every query logs cost/tokens/latency/answered
 metrics to llm_calls (approach="production") for the dashboard.
 """
 
+import time
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -11,7 +12,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 import db
-from pipeline import answer_query, build_rag
+from pipeline import build_rag
 
 load_dotenv()
 
@@ -41,12 +42,21 @@ class FeedbackRequest(BaseModel):
 
 @app.post("/query", response_model=QueryResponse)
 def query(request: QueryRequest) -> QueryResponse:
-    result = answer_query(_rag, request.query, approach="production")
+    start = time.perf_counter()
+    retrieval_results = _rag.search(request.query)
+    prompt = _rag.build_prompt(request.query, retrieval_results)
+    _rag.llm(prompt)
+    latency_seconds = time.perf_counter() - start
+    call_id = _rag.log_llm_call(
+        request.query,
+        approach="production",
+        latency_seconds=latency_seconds,
+    )
     return QueryResponse(
-        query_id=result["call_id"],
-        answer=result["answer"],
-        esi_level=result["esi_level"],
-        latency_seconds=result["latency_seconds"],
+        query_id=call_id,
+        answer=_rag.answer,
+        esi_level=_rag.predicted_answer,
+        latency_seconds=latency_seconds,
     )
 
 

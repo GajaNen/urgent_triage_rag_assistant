@@ -36,7 +36,7 @@ class Retriever:
     def __init__(
             self, 
             queries: List[str] = TEST_QUERIES, 
-            ncbi_search: bool =True,
+            ncbi_search: bool = False,
             ncbi_api_key: Optional[str] = os.getenv("NCBI_API_KEY")
         ):
         self.queries = queries
@@ -208,7 +208,7 @@ class Retriever:
             {
                 "chunk_id": cid,
                 "score": score,
-                "content": self.chunks[cid]["content"][:200],
+                "content": self.chunks[cid]["content"],
                 "source": self.chunks[cid]["source"]
             }
             for cid, score in text_results[:k]
@@ -225,7 +225,7 @@ class Retriever:
                     {
                         "chunk_id": cid,
                         "score": float(score),
-                        "content": self.chunks[cid]["content"][:200],
+                        "content": self.chunks[cid]["content"],
                         "source": self.chunks[cid]["source"]
                     }
                     for cid, score in vector_results[:k]
@@ -233,7 +233,7 @@ class Retriever:
 
         # Hybrid search: merge text & vector search results using reciprocal rank fusion
         # merge vecg vecm, vecg text, vecm text, vecg vecm text
-        # 3. Hybrid search combinations using RRF
+
         vec_gen_res = all_vector_results.get("general", [])
         vec_med_res = all_vector_results.get("medical", [])
 
@@ -252,13 +252,13 @@ class Retriever:
                 {
                     "chunk_id": cid,
                     "score": float(score),
-                    "content": self.chunks[cid]["content"][:200],
+                    "content": self.chunks[cid]["content"],
                     "source": self.chunks[cid]["source"]
                 }
                 for cid, score in hybrid_results
             ]
 
-        # 4. NCBI live PubMed search
+        # NCBI live PubMed search
         if self.ncbi_search:
             ncbi_docs = self.search_ncbi(query, k=k)
             if ncbi_docs:
@@ -299,5 +299,6 @@ class Retriever:
 
 
 if __name__ == "__main__":
+    # if you want NCBI live PubMed search, set ncbi_search=True
     retriever = Retriever()
     retriever.run()

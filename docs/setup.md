@@ -1,5 +1,8 @@
 # Setup Instructions
 
+This covers running the pieces manually/locally (e.g. for development). For
+the easiest way to run the whole app, see [usage.md](usage.md) (Docker).
+
 ## Prerequisites
 
 - Python 3.9+
@@ -47,53 +50,72 @@ NCBI_EMAIL=your.email@example.com
 Before running retrieval or the main application, extract and index the knowledge base:
 
 ```bash
-python src/data_prep.py
+python src/ingest_pipeline.py
 ```
 
-This will:
+This uses dlt to check whether any PDF in `knowledge_base/` is new/changed
+since the last run; if so, it runs `DataPrep` (`src/data_prep.py`), which will:
 - Extract text from all PDFs in `knowledge_base/`
 - Split into chunks (size=500, overlap=100)
 - Create vector indices with multiple embedding models:
   - General: `sentence-transformers/all-MiniLM-L6-v2`
   - Medical: `NeuML/pubmedbert-base-embeddings`
-- Build a keyword-based text search index
 - Save processed data to `data/`:
-  - `chunks.json` - document chunks
-  - `text_index.json` - keyword index
-  - `vector_store_general/` - general embedding vectors
-  - `vector_store_medical/` - medical embedding vectors
+  - `app.db` - SQLite db with the chunks table and an FTS5 keyword index
+  - `vector_store_general/` - general embedding vectors (FAISS)
+  - `vector_store_medical/` - medical embedding vectors (FAISS)
 
-**Note**: First run may take 5-10 minutes to download embeddings.
+To force a full re-run even if nothing changed, call
+`DataPrep().run()` directly (`python -c "from src.data_prep import DataPrep; DataPrep().run()"`)
+or delete `data/dlt_pipeline/last_ingested.txt`.
+
+**Note**: First run may take 5-10 minutes to download embedding models.
 
 ## Retrieval Evaluation
 
-Evaluate and compare different retrieval methods:
+Evaluate and compare different retrieval methods against the hand-labeled
+ground truth in `data/test_queries.json`:
 
 ```bash
 python src/retrieval.py
+python src/evaluate_retrieval.py
 ```
 
 This compares:
-1. **Text Search** - keyword-based retrieval
-2. **Vector Search (General)** - using general-purpose embeddings
-3. **Vector Search (Medical)** - using medical-specific embeddings
-4. **Hybrid Search** - combining text and vector (reciprocal rank fusion)
+1. **Text Search** - keyword-based retrieval (SQLite FTS5)
+2. **Vector Search (General / Medical)** - using general-purpose vs. medical embeddings
+3. **Hybrid Search variants** - combining text and vector results (reciprocal rank fusion)
 
-Results are saved to `data/retrieval_results.json` for analysis.
+Results are saved to the SQLite db and summarized in
+`data/retrieval_analysis.json` (hit rate, MRR, overlap between methods). See
+[pipeline.md](pipeline.md#7-retrieval-evaluation-results) for the current numbers.
+
+## RAG Evaluation
+
+Replay the ground-truth queries in `data/test_queries.json` through the RAG
+pipeline across models/retrieval approaches:
+
+```bash
+python src/evaluate_llm.py
+```
+
+Prints an accuracy / answer-rate summary per model x retrieval approach; each
+call is also logged to the SQLite db (`llm_calls` table).
 
 ## Output Structure
 
 ```
 project/
 ├── data/
-│   ├── chunks.json                 # Document chunks
-│   ├── text_index.json             # Keyword index
-│   ├── vector_store_general/       # General embeddings
-│   ├── vector_store_medical/       # Medical embeddings
-│   └── retrieval_results.json      # Evaluation results
+│   ├── app.db                       # SQLite: chunks, retrieval results, llm calls, feedback
+│   ├── vector_store_general/        # General embeddings (FAISS)
+│   ├── vector_store_medical/        # Medical embeddings (FAISS)
+│   ├── test_queries.json            # Ground truth for retrieval + RAG evaluation
+│   └── retrieval_analysis.json      # Retrieval evaluation summary
 └── knowledge_base/
     ├── iitt_adult.pdf
     ├── iitt_pediatric.pdf
     ├── ESI-Handbook-5th-Edition-3-2023.pdf
     └── ...
 ```
+
