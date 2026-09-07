@@ -187,10 +187,10 @@ You can also see user feedback buttons in action:
 
 <img width="1822" height="828" alt="image" src="https://github.com/user-attachments/assets/92e318af-d17a-4856-8dab-172ce1862299" />
 <img width="1846" height="825" alt="image" src="https://github.com/user-attachments/assets/02511127-d396-4584-87de-daffcd1552a2" />
+<img width="1847" height="792" alt="image" src="https://github.com/user-attachments/assets/6db01550-b813-461d-ae39-d820a96df8b7" />
 
 Here are screenshots demonstrating the Dashboard, which contains 5 plots.
 
-<img width="1847" height="792" alt="image" src="https://github.com/user-attachments/assets/6db01550-b813-461d-ae39-d820a96df8b7" />
 <img width="1867" height="792" alt="image" src="https://github.com/user-attachments/assets/fa389400-2ce7-41e9-8fe2-66da48dcac6a" />
 <img width="1800" height="601" alt="image" src="https://github.com/user-attachments/assets/6177a377-73bc-4430-8adc-caf1241ee43a" />
 <img width="1842" height="588" alt="image" src="https://github.com/user-attachments/assets/89775bd5-e50e-4c8b-939c-d926d7e98b3f" />
