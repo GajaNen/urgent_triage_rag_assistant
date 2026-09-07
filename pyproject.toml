@@ -9,6 +9,7 @@ dependencies = [
     "langchain-openai>=0.0.5",
     "langchain-community>=0.0.5",
     "sentence-transformers>=2.2.0",
+    "torch>=2.0.0",
     "faiss-cpu>=1.7.4",
     "pymupdf>=1.23.0",
     "pydantic>=2.0.0",
@@ -31,6 +32,18 @@ dev = [
     "black>=23.0.0",
     "ruff>=0.0.280",
 ]
+
+# CPU-only torch: avoids pulling the full NVIDIA CUDA toolkit (~2GB+),
+# which isn't needed since this project only does CPU inference (faiss-cpu).
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [build-system]
 requires = ["uv_build>=0.5.0"]
