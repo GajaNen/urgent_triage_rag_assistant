@@ -1,0 +1,53 @@
+[project]
+name = "urgent-triage-assistant"
+version = "0.1.0"
+description = "RAG-based urgent care triage assistant"
+requires-python = ">=3.10"
+
+dependencies = [
+    "langchain>=0.0.300",
+    "langchain-openai>=0.0.5",
+    "langchain-community>=0.0.5",
+    "sentence-transformers>=2.2.0",
+    "torch>=2.0.0",
+    "faiss-cpu>=1.7.4",
+    "pymupdf>=1.23.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "streamlit>=1.28.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "requests>=2.31.0",
+    "biopython>=1.81",
+    "polars>=1.44.1",
+    "dlt[duckdb]>=1.0.0",
+    "openai>=1.55.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.0.0",
+    "ruff>=0.0.280",
+]
+
+# CPU-only torch: avoids pulling the full NVIDIA CUDA toolkit (~2GB+),
+# which isn't needed since this project only does CPU inference (faiss-cpu).
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[build-system]
+requires = ["uv_build>=0.5.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = false
