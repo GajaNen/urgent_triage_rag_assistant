@@ -17,7 +17,7 @@ def load_results() -> Dict:
     with db.get_connection() as conn:
         return db.load_retrieval_results(conn)
 
-def load_ground_truth() -> pl.DataFrame:
+def load_ground_truth():
     """Load the ground truth (query, chunk_id) pairs from the json file."""
     json_content = json.loads((DATA_DIR / "test_queries.json").read_text(encoding="utf-8"))
     return json_content["retrieval_queries"]
