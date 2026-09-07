@@ -3,7 +3,6 @@ Retrieval evaluation: Compare performance of different retrieval methods.
 """
 
 import json
-import polars as pl
 from pathlib import Path
 from typing import Dict, List
 from collections import defaultdict
@@ -19,9 +18,8 @@ def load_results() -> Dict:
         return db.load_retrieval_results(conn)
 
 def load_ground_truth() -> pl.DataFrame:
-    """Load the ground truth relevance judgments from the database."""
+    """Load the ground truth (query, chunk_id) pairs from the json file."""
     json_content = json.loads((DATA_DIR / "test_queries.json").read_text(encoding="utf-8"))
-    #df = pl.DataFrame(json_content["retrieval_queries"])
     return json_content["retrieval_queries"]
 
 
@@ -174,10 +172,6 @@ def print_report(results: Dict, ground_truth: List[Dict]):
     for pair, jacc_idx in sorted(average_overlap_pairs.items(), key=lambda x: x[1], reverse=True):
         print(f"  {pair}: {jacc_idx:.3f}")
 
-    print("\n" + "=" * 80)
-    print("RECOMMENDATIONS")
-    print("-" * 80)
-
     # compute relevance for each method
     relevance_batch = compute_relevance_batch(ground_truth, results)
 
@@ -190,14 +184,12 @@ def print_report(results: Dict, ground_truth: List[Dict]):
         print(f"  MRR: {mrr(relevance):.3f}")
 
     # Find best performing method
-    print("\n")
     print("\n" + "=" * 80)
-    print("\n")
+    print("RECOMMENDATIONS")
+    print("-" * 80)
     best_method = max(relevance_batch.items(), key=lambda x: mrr(x[1]))
     print(f"Best single method based on MRR: {best_method[0]}")
     print(f"  - MRR: {mrr(best_method[1]):.3f}")
-
-
     print("\n" + "=" * 80)
 
 
