@@ -189,7 +189,11 @@ You can also see user feedback buttons in action:
 <img width="1846" height="825" alt="image" src="https://github.com/user-attachments/assets/02511127-d396-4584-87de-daffcd1552a2" />
 <img width="1847" height="792" alt="image" src="https://github.com/user-attachments/assets/6db01550-b813-461d-ae39-d820a96df8b7" />
 
-Here are screenshots demonstrating the Dashboard, which contains 5 plots.
+Here are screenshots demonstrating the Dashboard before any data (llm calls) are recorded in the db:
+
+<img width="1888" height="840" alt="image" src="https://github.com/user-attachments/assets/00fb894e-cce9-4066-b0d4-518e80e41c20" />
+
+And then, after a few queries, the 5 plots it contains.
 
 <img width="1867" height="792" alt="image" src="https://github.com/user-attachments/assets/fa389400-2ce7-41e9-8fe2-66da48dcac6a" />
 <img width="1800" height="601" alt="image" src="https://github.com/user-attachments/assets/6177a377-73bc-4430-8adc-caf1241ee43a" />
