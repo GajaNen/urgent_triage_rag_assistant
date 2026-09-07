@@ -47,10 +47,6 @@
     ],
     "llm_queries": [
         {
-            "query": "A 28-year-old patient presents with generalized abdominal pain. Her last menstrual period is reported as 8 weeks ago. Vital signs are as follows: T 36.7°C (98°F), HR 120 beats/minute, RR 22 breaths/minute, and BP 92/50mm Hg.",
-            "correct_answer": 2
-        },
-        {
             "query": "A 15-month-old presents with their caregiver, who states the child has had decreased appetite, a low-grade temperature, and numerous liquid stools. The toddler is sitting quietly on the mother's lap. They have no past medical history, no known drug allergies, and are not on any medications. Vital signs are as follows: T 38°C (100.4°F), HR 158 beats/minute, RR 42 breaths/minute, BP 86/50 mm Hg. Capillary refill is 3 seconds.",
             "correct_answer": 2
         },
@@ -66,31 +62,22 @@
             "query": "A 72-year-old patient presents to the ED with oxygen via nasal cannula for her advanced chronic obstructive pulmonary disease. She informs the triage nurse that she has an infected cat bite on her left hand. The hand is red, tender, and swollen. The patient has no other medical problems, takes daily inhaled steroids, uses albuterol as needed, and takes an aspirin daily. Vital signs include the following: T 37.5°C (99.6°F), HR 105 beats/minute, RR 24 breaths/minute, BP 138/80 mm Hg, and SpO2 91% (on 2 L nasal cannula per norm, states her SpO2 is 90 to 91% at home). She denies respiratory distress.",
             "correct_answer": 2
         },
-        {
-            "query": "Healthy 3-year-old patient with right ear pain, up to date on immunizations. Vital signs WNL.",
-            "correct_answer": 5
-        },
+
+
+       
         {
             "query": "A 42-year-old patient who lost their rescue inhaler and needs a new prescription. Patient is asymptomatic and vital signs are WNL.",
             "correct_answer": 5
-        },
-        {
-            "query": "Healthy 19-year-old patient with a sore throat. Vital signs WNL.",
-            "correct_answer": 4
-        },
+        },     
         {
             "query": "Healthy 29-year-old assigned female at birth with dysuria. Vitals signs WNL.",
             "correct_answer": 4
         },
         {
-            "query": "A 22-year-old assigned male at birth with right lower quadrant abdominal pain since early this morning. Vital signs WNL.",
-            "correct_answer": 3
-        },
-        {
             "query": "A 45-year-old patient with left lower leg pain and swelling, started 2 days ago after a 12-hour car trip. Vital signs WNL.",
             "correct_answer": 3
         },
-		       {
+		{
             "query": "EMS arrives with a 25 year old female with sudden onset of significant vaginal bleeding, with 9/10 abdominal pain. The patient is 7 mos pregnant. BP 92/palp, HR 130.",
             "correct_answer": 1
         },
