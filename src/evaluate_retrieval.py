@@ -101,7 +101,7 @@ def compute_relevance(query_data: Dict[str, int], retrieved_results: List[Dict])
 
     return relevance
 
-def compute_relevance_batch(ground_truth: List[Dict], all_retrieved_results: Dict[Dict[str, List[Dict]]]):
+def compute_relevance_batch(ground_truth: List[Dict], all_retrieved_results: Dict[str, Dict[str, List[Dict]]]):
     """Compute relevance for all queries in the ground truth for all methods."""
     relevance_batch: Dict[str, List[List[int]]] = defaultdict(list)
 

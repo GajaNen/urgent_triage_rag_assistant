@@ -133,15 +133,10 @@ flowchart TD
     D --> E[compute_relevance_batch\nchunk_id match vs ground truth]
     E --> F[hit_rate per method]
     E --> G[mrr per method]
-    C --> H[analyze_retrieval.py]
-    H --> I[analyze_overlap\nJaccard similarity between methods]
-    H --> J[summarize_performance\navg similarity score per method]
-    H --> K[compare_sources\nsource distribution per method]
+    E--> I[analyze_overlap\nJaccard similarity between methods]
+    E --> J[summarize_performance\navg score over top k queries per method]
+    E --> K[compare_sources\nsource distribution per method]
     F --> L[retrieval_analysis.json]
-    G --> L
-    I --> L
-    J --> L
-    K --> L
 ```
 
 Runs a small hand-labeled set of triage queries (each mapped to the
