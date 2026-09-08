@@ -63,11 +63,13 @@ results.
 ### Evaluation Strategy
 - **Ground Truth for retrieval evaluation**: triage queries (`data/test_queries.json['retrieval_queries']`).
   They were obtained from the ESI handbook, which is a part of our knowledge base.
-  There were 11 examples of how and which ESI scores are assigned based on the patient presentation.
+  In the handbook, there were 11 examples, consisting of a patient presentation and their
+  ESI score, together with the reasoning behind the score assignment.
   We identified which passages in the handbook are the basis for the ESI assessment in each example
   manually and with the help of the Claude AI model. Then we searched for this passage in the DB
-  (```chunks```) to obtain the ```chunk_id``` of the passage. The pairs of the query and chunk_id
-  constitute ground truth for retrieval in the json file. Then these examples with the answers
+  (```chunks```) to obtain the ```chunk_id``` of the passage. The pairs of the ```query```,
+  which is the patient presentation, and the ```chunk_id``` constitute ground truth
+  for retrieval in the json file. Then these examples with the answers
   were redacted from the original pdf. Only the redacted version was used for retrieval evaluation
   and in the whole rag workflow
 - **Ground Truth for LLM evaluation**: triage queries (`data/test_queries.json['llm_queries']`),
