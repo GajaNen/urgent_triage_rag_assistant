@@ -22,6 +22,7 @@ def load_ground_truth():
     json_content = json.loads((DATA_DIR / "test_queries.json").read_text(encoding="utf-8"))
     return json_content["retrieval_queries"]
 
+# ---------- METHOD SIMILARITY ---------- #
 
 def analyze_overlap(results: Dict) -> Dict[str, Dict[str, float]]:
     """Calculate Jaccard similarity between retrieval methods."""
@@ -88,8 +89,7 @@ def compare_sources(results: Dict) -> Dict[str, Dict[str, int]]:
 
     return dict(source_counts)
 
-# --------------------------------------------- #
-# RELEVANCE
+# --------------- RETRIEVED RESULTS' RELEVANCE -------------- #
 
 def compute_relevance(query_data: Dict[str, int], retrieved_results: List[Dict]):
     """Compute relevance of retrieved results for a single query based on chunk_id."""

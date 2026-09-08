@@ -110,6 +110,10 @@ Given a query, runs every retrieval method in parallel (text, both vector
 indices, and RRF-combined hybrids) so the outputs can be compared directly.
 Optionally also queries PubMed live for supplementary evidence.
 
+NCBI search is disabled by default (set ```ncbi_search=True``` in ```retrieval.py``` to enable it)
+and we didn't use it in this project, either for producing the results or the UI & Dashboard,
+because its current implementation is very slow.
+
 **Tools used:**
 - **SQLite FTS5** — keyword/BM25 search over the chunk text (see Data Preparation).
 - **FAISS + HuggingFace embeddings** — vector similarity search over the two embedding indices.
@@ -133,7 +137,7 @@ flowchart TD
     D --> E[compute_relevance_batch\nchunk_id match vs ground truth]
     E --> F[hit_rate per method]
     E --> G[mrr per method]
-    E--> I[analyze_overlap\nJaccard similarity between methods]
+    E --> I[analyze_overlap\nJaccard similarity between methods]
     E --> J[summarize_performance\navg score over top k queries per method]
     E --> K[compare_sources\nsource distribution per method]
     F --> L[retrieval_analysis.json]
