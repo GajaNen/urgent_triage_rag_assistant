@@ -61,10 +61,18 @@ retrieval, retrieval evaluation, RAG, RAG evaluation), including evaluation
 results.
 
 ### Evaluation Strategy
-- **Ground Truth for retrieval evaluation**: triage queries (`data/test_queries.json['retrieval_queries']`). They were obtained from the ESI handbook (in the knowledge base):
-  they were the examples in the book, so we knew which chunk contains the answer, a correct chunk from the DB was identified and written to the json file. The parts containing
-  these information were redacted in the pdf and only the redcated pdf was used as a part of the knowldedge base. 
-- **Ground Truth for LLM evaluation**: triage queries (`data/test_queries.json['llm_queries']`), the questions and answers are taken from various NCLEX-style emergency nursing exam questions
+- **Ground Truth for retrieval evaluation**: triage queries (`data/test_queries.json['retrieval_queries']`).
+  They were obtained from the ESI handbook, which is a part of our knowledge base.
+  There were 11 examples of how and which ESI scores are assigned based on the patient presentation.
+  We identified which passages in the handbook are the basis for the ESI assessment in each example
+  manually and with the help of the Claude AI model. Then we searched for this passage in the DB
+  (```chunks```) to obtain the ```chunk_id``` of the passage. The pairs of the query and chunk_id
+  constitute ground truth for retrieval in the json file. Then these examples with the answers
+  were redacted from the original pdf. Only the redacted version was used for retrieval evaluation
+  and in the whole rag workflow
+- **Ground Truth for LLM evaluation**: triage queries (`data/test_queries.json['llm_queries']`),
+  the questions and answers are taken from various NCLEX-style emergency nursing exam questions
+  found online
 - **Metrics**: retrieval hit rate/MRR, and LLM triage-level accuracy/answer rate
 - **Best Practices**: hybrid search (reciprocal rank fusion), comparing multiple embedding models, structured LLM output
 
@@ -83,7 +91,8 @@ intended use and limitations are described in [The problem](#the-problem).
 
 The application retrieves passages from a local medical persistent knowledge base using
 keyword search, two embedding-based searches, and hybrid search before calling
-the LLM. The complete flow is documented in [docs/pipeline.md, Retrieval](docs/pipeline.md#3-retrieval), [docs/pipeline.md, RAG](docs/pipeline.md#5-rag), and the [RAG Flow](#rag-flow) diagram below.
+the LLM. The complete flow is documented in [docs/pipeline.md, Retrieval](docs/pipeline.md#3-retrieval), 
+[docs/pipeline.md, RAG](docs/pipeline.md#5-rag), and the [RAG Flow](#rag-flow) diagram below.
 
 ### Retrieval Evaluation
 
@@ -100,7 +109,8 @@ and results are in [RAG Evaluation](docs/pipeline.md#6-rag-evaluation) and [the 
 ### Interface
 
 The system provides a FastAPI endpoint for programmatic queries and a Streamlit
-dashboard for interactive use and monitoring. See [src/api.py](src/api.py), [src/dashboard.py](src/dashboard.py), and [docs/pipeline.md, API and Dashboard](docs/pipeline.md#9-api).
+dashboard for interactive use and monitoring. See [src/api.py](src/api.py), [src/dashboard.py](src/dashboard.py), 
+and [docs/pipeline.md, API and Dashboard](docs/pipeline.md#9-api).
 
 ### Ingestion Pipeline
 
