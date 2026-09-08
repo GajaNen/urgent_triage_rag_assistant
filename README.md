@@ -66,12 +66,11 @@ results.
   In the handbook, there were 11 examples, consisting of a patient presentation and their
   ESI score, together with the reasoning behind the score assignment.
   We identified which passages in the handbook are the basis for the ESI assessment in each example
-  manually and with the help of the Claude AI model. Then we searched for this passage in the DB
-  (```chunks```) to obtain the ```chunk_id``` of the passage. The pairs of the ```query```,
-  which is the patient presentation, and the ```chunk_id``` constitute ground truth
-  for retrieval in the json file. Then these examples with the answers
-  were redacted from the original pdf. Only the redacted version was used for retrieval evaluation
-  and in the whole rag workflow
+  manually and with the help of the Claude AI model. Then, we obtained the ```chunk_id``` of each passage
+  from the ```chunks``` table in the database. The pairs of the ```query```,
+  which is the patient presentation, and the associated ```chunk_id``` constitute the ground truth
+  for retrieval and were written to the ```json``` file. Then these examples with their answers
+  were redacted from the original handbook pdf. Only the redacted version is used for retrieval/RAG
 - **Ground Truth for LLM evaluation**: triage queries (`data/test_queries.json['llm_queries']`),
   the questions and answers are taken from various NCLEX-style emergency nursing exam questions
   found online
