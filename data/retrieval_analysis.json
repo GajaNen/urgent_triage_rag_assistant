@@ -1,0 +1,901 @@
+{
+  "summary": {
+    "hybrid_search_text_and_vector_general": {
+      "avg_score_method": 0.022115375362858323
+    },
+    "hybrid_search_text_and_vector_medical": {
+      "avg_score_method": 0.023137984470289606
+    },
+    "hybrid_search_text_vector_general_and_medical": {
+      "avg_score_method": 0.034309175241307124
+    },
+    "hybrid_search_vector_general_and_medical": {
+      "avg_score_method": 0.027652247861407783
+    },
+    "text_search": {
+      "avg_score_method": 14.975974102136945
+    },
+    "vector_search_general": {
+      "avg_score_method": 1.0845681244676764
+    },
+    "vector_search_medical": {
+      "avg_score_method": 154.00537470037287
+    }
+  },
+  "overlap": {
+    "A 15-month-old presents with their caregiver, who states the child has had decreased appetite, a low-grade temperature, and numerous liquid stools. The toddler is sitting quietly on the mother's lap. They have no past medical history, no known drug allergies, and are not on any medications. Vital signs are as follows: T 38\u00b0C (100.4\u00b0F), HR 158 beats/minute, RR 42 breaths/minute, BP 86/50 mm Hg. Capillary refill is 3 seconds.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.6666666666666666,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.1111111111111111,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.1111111111111111,
+      "text_search \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.1111111111111111,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "vector_search_medical \u2194 vector_search_general": 0.42857142857142855,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.1111111111111111
+    },
+    "A 22-year-old assigned male at birth with right lower quadrant abdominal pain since early this morning. Vital signs WNL.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "text_search \u2194 vector_search_medical": 0.1111111111111111,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "text_search \u2194 vector_search_general": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.25,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.1111111111111111,
+      "vector_search_medical \u2194 vector_search_general": 0.1111111111111111,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.6666666666666666
+    },
+    "A 28-year-old patient presents with generalized abdominal pain. Her last menstrual period is reported as 8 weeks ago. Vital signs are as follows: T 36.7\u00b0C (98\u00b0F), HR 120 beats/minute, RR 22 breaths/minute, and BP 92/50mm Hg.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.1111111111111111,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "text_search \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.25,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "vector_search_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.42857142857142855
+    },
+    "A 34-year-old patient assigned female at birth presents with generalized abdominal pain, vomiting, and constipation. She has a history of laminectomy and currently takes no medications. She states her LMP was within the last 28 days. Vital signs are as follows: T 36.5\u00b0C (97.8\u00b0F), HR 102 beats/minute, RR 16 breaths/minute, BP 132/80 mm Hg, and SpO2 99%.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.1111111111111111,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "text_search \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.0,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.0,
+      "vector_search_medical \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.25
+    },
+    "A 42-year-old patient who lost their rescue inhaler and needs a new prescription. Patient is asymptomatic and vital signs are WNL.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 1.0,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.1111111111111111,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.1111111111111111,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "text_search \u2194 vector_search_general": 0.1111111111111111,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.25,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.0,
+      "vector_search_medical \u2194 vector_search_general": 0.1111111111111111,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.42857142857142855
+    },
+    "A 45-year-old patient with left lower leg pain and swelling, started 2 days ago after a 12-hour car trip. Vital signs WNL.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.1111111111111111,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "text_search \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.1111111111111111,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.1111111111111111,
+      "vector_search_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.25
+    },
+    "A 57-year-old presents with cough for multiple days. The patient tells you that they had a temperature of 101\u00b0F (38.3\u00b0C) last night. Vital signs are as follows: T 38.5\u00b0C (101.4\u00b0F), RR 26 breaths/minute, HR 100 beats/minute, and SpO2 90%.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.6666666666666666,
+      "text_search \u2194 vector_search_medical": 0.1111111111111111,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "text_search \u2194 vector_search_general": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.1111111111111111,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 1.0,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.42857142857142855,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.1111111111111111,
+      "vector_search_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.42857142857142855
+    },
+    "A 72-year-old patient presents to the ED with oxygen via nasal cannula for her advanced chronic obstructive pulmonary disease. She informs the triage nurse that she has an infected cat bite on her left hand. The hand is red, tender, and swollen. The patient has no other medical problems, takes daily inhaled steroids, uses albuterol as needed, and takes an aspirin daily. Vital signs include the following: T 37.5\u00b0C (99.6\u00b0F), HR 105 beats/minute, RR 24 breaths/minute, BP 138/80 mm Hg, and SpO2 91% (on 2 L nasal cannula per norm, states her SpO2 is 90 to 91% at home). She denies respiratory distress.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.0,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.1111111111111111,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.1111111111111111,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.25,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "text_search \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.1111111111111111,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.1111111111111111,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.0,
+      "vector_search_medical \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.25
+    },
+    "Healthy 19-year-old patient with a sore throat. Vital signs WNL.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 1.0,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "text_search \u2194 vector_search_general": 0.1111111111111111,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.42857142857142855,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.1111111111111111,
+      "vector_search_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.42857142857142855
+    },
+    "Healthy 29-year-old assigned female at birth with dysuria. Vitals signs WNL.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.0,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.1111111111111111,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.1111111111111111,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.6666666666666666,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.25,
+      "text_search \u2194 vector_search_medical": 0.0,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "text_search \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.1111111111111111,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.0,
+      "vector_search_medical \u2194 vector_search_general": 0.0,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.42857142857142855
+    },
+    "Healthy 3-year-old patient with right ear pain, up to date on immunizations. Vital signs WNL.": {
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_vector_general_and_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 text_search": 0.25,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_medical": 0.6666666666666666,
+      "hybrid_search_text_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "hybrid_search_text_vector_general_and_medical \u2194 vector_search_general": 0.25,
+      "hybrid_search_vector_general_and_medical \u2194 text_search": 0.1111111111111111,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_medical": 0.42857142857142855,
+      "hybrid_search_vector_general_and_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_vector_general_and_medical \u2194 vector_search_general": 0.42857142857142855,
+      "text_search \u2194 hybrid_search_text_and_vector_medical": 0.42857142857142855,
+      "text_search \u2194 vector_search_medical": 0.25,
+      "text_search \u2194 hybrid_search_text_and_vector_general": 0.25,
+      "text_search \u2194 vector_search_general": 0.1111111111111111,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_medical": 0.6666666666666666,
+      "hybrid_search_text_and_vector_medical \u2194 hybrid_search_text_and_vector_general": 0.6666666666666666,
+      "hybrid_search_text_and_vector_medical \u2194 vector_search_general": 0.1111111111111111,
+      "vector_search_medical \u2194 hybrid_search_text_and_vector_general": 0.42857142857142855,
+      "vector_search_medical \u2194 vector_search_general": 0.1111111111111111,
+      "hybrid_search_text_and_vector_general \u2194 vector_search_general": 0.25
+    }
+  },
+  "sources": {
+    "hybrid_search_text_and_vector_general": {
+      "ESI-Handbook-5th-Edition-3-2023.pdf": 43,
+      "iitt_pediatric.pdf": 6,
+      "mcm-triage_guidance-note.pdf": 2,
+      "iitt_adult.pdf": 2,
+      "iitt_reference-card09165e1c-0df5-472d-ab53-45506191a7bd.pdf": 1,
+      "mass-casualty---iitt.pdf": 1
+    },
+    "hybrid_search_text_and_vector_medical": {
+      "ESI-Handbook-5th-Edition-3-2023.pdf": 47,
+      "iitt_pediatric.pdf": 4,
+      "mcm-triage_guidance-note.pdf": 2,
+      "iitt_reference-card09165e1c-0df5-472d-ab53-45506191a7bd.pdf": 1,
+      "mass-casualty---iitt.pdf": 1
+    },
+    "hybrid_search_text_vector_general_and_medical": {
+      "ESI-Handbook-5th-Edition-3-2023.pdf": 42,
+      "iitt_pediatric.pdf": 9,
+      "iitt_adult.pdf": 3,
+      "mass-casualty---iitt.pdf": 1
+    },
+    "hybrid_search_vector_general_and_medical": {
+      "ESI-Handbook-5th-Edition-3-2023.pdf": 40,
+      "iitt_pediatric.pdf": 10,
+      "iitt_adult.pdf": 4,
+      "mcm-triage_guidance-note.pdf": 1
+    },
+    "text_search": {
+      "mcm-triage_guidance-note.pdf": 3,
+      "ESI-Handbook-5th-Edition-3-2023.pdf": 47,
+      "iitt_reference-card09165e1c-0df5-472d-ab53-45506191a7bd.pdf": 3,
+      "iitt_pediatric.pdf": 1,
+      "mass-casualty---iitt.pdf": 1
+    },
+    "vector_search_general": {
+      "ESI-Handbook-5th-Edition-3-2023.pdf": 34,
+      "iitt_pediatric.pdf": 15,
+      "iitt_adult.pdf": 5,
+      "mcm-triage_guidance-note.pdf": 1
+    },
+    "vector_search_medical": {
+      "ESI-Handbook-5th-Edition-3-2023.pdf": 48,
+      "mcm-triage_guidance-note.pdf": 2,
+      "iitt_adult.pdf": 2,
+      "iitt_pediatric.pdf": 3
+    }
+  },
+  "relevance_batch": {
+    "hybrid_search_text_and_vector_general": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "hybrid_search_text_and_vector_medical": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "hybrid_search_text_vector_general_and_medical": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "hybrid_search_vector_general_and_medical": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "text_search": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "vector_search_general": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "vector_search_medical": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "Hit Rate": {
+    "hybrid_search_text_and_vector_general": 0.09090909090909091,
+    "hybrid_search_text_and_vector_medical": 0.09090909090909091,
+    "hybrid_search_text_vector_general_and_medical": 0.09090909090909091,
+    "hybrid_search_vector_general_and_medical": 0.09090909090909091,
+    "text_search": 0.18181818181818182,
+    "vector_search_general": 0.09090909090909091,
+    "vector_search_medical": 0.09090909090909091
+  },
+  "MRR": {
+    "hybrid_search_text_and_vector_general": 0.09090909090909091,
+    "hybrid_search_text_and_vector_medical": 0.09090909090909091,
+    "hybrid_search_text_vector_general_and_medical": 0.09090909090909091,
+    "hybrid_search_vector_general_and_medical": 0.09090909090909091,
+    "text_search": 0.1212121212121212,
+    "vector_search_general": 0.018181818181818184,
+    "vector_search_medical": 0.09090909090909091
+  }
+}
